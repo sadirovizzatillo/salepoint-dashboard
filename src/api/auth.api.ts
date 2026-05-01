@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { LoginRequest, LoginResponse, SelectShopRequest, AuthTokens } from '@/types/auth.types'
+import { client } from './client'
+import { LoginRequest, LoginResponse, SelectShopRequest, AuthTokens, Me } from '@/types/auth.types'
 
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1'
 
@@ -30,6 +31,11 @@ export const authApi = {
       { headers: { Authorization: `Bearer ${token}` } }
     )
     return data.data
+  },
+
+  me: async (): Promise<Me> => {
+    const { data } = await client.get('/auth/me')
+    return data
   },
 
   logout: async (): Promise<void> => {

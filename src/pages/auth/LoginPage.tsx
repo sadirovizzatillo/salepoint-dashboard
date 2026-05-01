@@ -28,7 +28,7 @@ export default function LoginPage() {
         const validStatuses: SubscriptionStatus[] = ['active', 'trial']
         if (!validStatuses.includes(shop.subscriptionStatus)) {
           setError(
-            shop.subscriptionStatus === 'EXPIRED'
+            shop.subscriptionStatus === 'expired'
               ? "Obuna muddati tugagan. Iltimos, obunani yangilang."
               : "Do'kon to'xtatilgan. Iltimos, qo'llab-quvvatlash bilan bog'laning."
           )

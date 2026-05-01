@@ -14,6 +14,7 @@ import { useAuthStore } from '@/store'
 import { useUiStore } from '@/store'
 import { authApi } from '@/api/auth.api'
 import { useShops } from '@/hooks/useShops'
+import { useMe } from '@/hooks/useAuth'
 import { Shop } from '@/types/shop.types'
 
 const { Header } = Layout
@@ -21,26 +22,20 @@ const { Text } = Typography
 
 const statusConfig: Record<string, { label: string; color: string; bg: string; border: string }> = {
   active: { label: 'Faol', color: '#10b981', bg: '#f0fdf4', border: '#a7f3d0' },
-  ACTIVE: { label: 'Faol', color: '#10b981', bg: '#f0fdf4', border: '#a7f3d0' },
-  SUSPENDED: { label: "To'xtatilgan", color: '#ef4444', bg: '#fef2f2', border: '#fecaca' },
-  EXPIRED: { label: 'Muddati tugagan', color: '#f59e0b', bg: '#fffbeb', border: '#fde68a' },
+  trial: { label: 'Sinov', color: '#6366f1', bg: '#eef2ff', border: '#c7d2fe' },
+  suspended: { label: "To'xtatilgan", color: '#ef4444', bg: '#fef2f2', border: '#fecaca' },
+  expired: { label: 'Muddati tugagan', color: '#f59e0b', bg: '#fffbeb', border: '#fde68a' },
 }
 const fallbackStatus = { label: 'Noma\'lum', color: '#64748b', bg: '#f8fafc', border: '#e2e8f0' }
 
-function parseJwt(token: string) {
-  try {
-    return JSON.parse(atob(token.split('.')[1]))
-  } catch {
-    return {}
-  }
-}
-
 export default function TopBar() {
   const navigate = useNavigate()
-  const { accessToken, logout, switchShop } = useAuthStore()
+  const { logout, switchShop } = useAuthStore()
   const { sidebarCollapsed, toggleSidebar } = useUiStore()
   const { data: shops = [], isLoading: shopsLoading } = useShops()
-  const user = accessToken ? parseJwt(accessToken) : {}
+  const { data: me } = useMe()
+  const currentShopId = me?.shop?.id
+  const currentShopName = me?.shop?.name
 
   const [modalOpen, setModalOpen] = useState(false)
   const [switching, setSwitching] = useState<string | null>(null)
@@ -57,11 +52,11 @@ export default function TopBar() {
   }
 
   const handleSwitchShop = async (shop: Shop) => {
-    const isActive = shop.subscriptionStatus === 'active' || shop.subscriptionStatus === 'ACTIVE'
+    const isActive = shop.subscriptionStatus === 'active'
     if (!isActive) return
 
     // Already on this shop
-    if (shop.name === user?.shopName) {
+    if (shop.id === currentShopId) {
       setModalOpen(false)
       return
     }
@@ -102,10 +97,10 @@ export default function TopBar() {
     },
   ]
 
-  const initials = user?.name
-    ? user.name
+  const initials = me?.name
+    ? me.name
         .split(' ')
-        .map((n: string) => n[0])
+        .map((n) => n[0])
         .join('')
         .toUpperCase()
         .slice(0, 2)
@@ -172,7 +167,7 @@ export default function TopBar() {
             }}
           >
             <ShopOutlined style={{ fontSize: 12, color: '#6366f1' }} />
-            {user?.shopName || "Do'kon"}
+            {currentShopName || "Do'kon"}
           </div>
 
           {/* Divider */}
@@ -241,10 +236,10 @@ export default function TopBar() {
                   style={{ fontSize: 12, fontWeight: 600, color: '#0f172a', maxWidth: 110 }}
                   ellipsis
                 >
-                  {user?.name || 'User'}
+                  {me?.name || 'User'}
                 </Text>
                 <Text style={{ fontSize: 11, color: '#94a3b8' }}>
-                  {user?.roles?.[0] ?? 'Foydalanuvchi'}
+                  {me?.roles?.[0] ?? 'Foydalanuvchi'}
                 </Text>
               </div>
             </div>
@@ -277,8 +272,8 @@ export default function TopBar() {
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {shops.map((shop) => {
-              const isActive = shop.subscriptionStatus === 'active' || shop.subscriptionStatus === 'ACTIVE'
-              const isCurrent = shop.name === user?.shopName
+              const isActive = shop.subscriptionStatus === 'active'
+              const isCurrent = shop.id === currentShopId
               const isLoading = switching === shop.id
               const status = statusConfig[shop.subscriptionStatus] ?? fallbackStatus
 

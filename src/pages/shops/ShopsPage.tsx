@@ -13,9 +13,9 @@ import { formatDate } from '@/utils/formatters'
 const { Text } = Typography
 
 const STATUS_CONFIG: Record<SubscriptionStatus, { label: string; color: string }> = {
-  ACTIVE: { label: 'Faol', color: 'green' },
-  SUSPENDED: { label: "To'xtatilgan", color: 'red' },
-  EXPIRED: { label: 'Muddati tugagan', color: 'orange' },
+  active: { label: 'Faol', color: 'green' },
+  suspended: { label: "To'xtatilgan", color: 'red' },
+  expired: { label: 'Muddati tugagan', color: 'orange' },
   trial: { label: 'Sinov', color: 'blue' },
 }
 

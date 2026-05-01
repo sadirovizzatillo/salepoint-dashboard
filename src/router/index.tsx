@@ -1,6 +1,9 @@
+import { useEffect } from 'react'
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom'
 import { useAuthStore } from '@/store'
+import { useMe } from '@/hooks/useAuth'
 import AppLayout from '@/components/layout/AppLayout'
+import FullScreenLoader from '@/components/common/FullScreenLoader'
 import LoginPage from '@/pages/auth/LoginPage'
 import ShopSelectPage from '@/pages/auth/ShopSelectPage'
 import DashboardPage from '@/pages/dashboard/DashboardPage'
@@ -15,10 +18,21 @@ import EmployeesPage from '@/pages/employees/EmployeesPage'
 import ShopsPage from '@/pages/shops/ShopsPage'
 import DebtsPage from '@/pages/debts/DebtsPage'
 import ShiftsPage from '@/pages/shifts/ShiftsPage'
+import SmsLogsPage from '@/pages/sms/SmsLogsPage'
 
 const ProtectedRoute = () => {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />
+  const logout = useAuthStore((s) => s.logout)
+  const { data, isPending, isError } = useMe()
+
+  useEffect(() => {
+    if (isAuthenticated && isError) logout()
+  }, [isAuthenticated, isError, logout])
+
+  if (!isAuthenticated) return <Navigate to="/login" replace />
+  if (isPending) return <FullScreenLoader tip="Yuklanmoqda..." />
+  if (isError || !data) return <Navigate to="/login" replace />
+  return <Outlet />
 }
 
 const PublicRoute = () => {
@@ -52,6 +66,7 @@ export const router = createBrowserRouter([
           { path: '/shops', element: <ShopsPage /> },
           { path: '/debts', element: <DebtsPage /> },
           { path: '/shifts', element: <ShiftsPage /> },
+          { path: '/sms-logs', element: <SmsLogsPage /> },
         ],
       },
     ],

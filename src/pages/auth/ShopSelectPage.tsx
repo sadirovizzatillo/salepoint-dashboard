@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react'
 import { Alert, Button, Typography, Tag, Spin, message } from 'antd'
 import { ShopOutlined, CheckCircleFilled, ArrowLeftOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 import { authApi } from '@/api/auth.api'
 import { useAuthStore } from '@/store'
 import { ShopOption } from '@/types/auth.types'
+import { ME_KEY } from '@/hooks/useAuth'
 
 const { Title, Text } = Typography
 
@@ -17,6 +19,7 @@ const statusConfig = {
 export default function ShopSelectPage() {
   const navigate = useNavigate()
   const { preAuthToken, shops, setTokens, clearPreAuth } = useAuthStore()
+  const qc = useQueryClient()
 
   const [loading, setLoading] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -34,6 +37,7 @@ export default function ShopSelectPage() {
     try {
       const tokens = await authApi.selectShop({ shopId: shop.id }, preAuthToken!)
       setTokens(tokens.accessToken, tokens.refreshToken)
+      qc.removeQueries({ queryKey: [ME_KEY] })
       message.success(`${shop.name} — tizimga kirdingiz`)
       navigate('/')
     } catch (err: any) {
@@ -43,6 +47,7 @@ export default function ShopSelectPage() {
         const tokens = err?.response?.data
         if (tokens?.accessToken) {
           setTokens(tokens.accessToken, tokens.refreshToken)
+          qc.removeQueries({ queryKey: [ME_KEY] })
           navigate('/')
           return
         }

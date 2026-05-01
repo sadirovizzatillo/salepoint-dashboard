@@ -13,6 +13,7 @@ import {
   ShopOutlined,
   AlertOutlined,
   FieldTimeOutlined,
+  MessageOutlined,
 } from '@ant-design/icons'
 import { useUiStore } from '@/store'
 
@@ -46,6 +47,7 @@ const navItems = [
       { key: '/transactions', icon: <SwapOutlined />, label: 'Tranzaksiyalar' },
       { key: '/customers', icon: <UserOutlined />, label: 'Mijozlar' },
       { key: '/debts', icon: <AlertOutlined />, label: 'Qarzdorlar' },
+      { key: '/sms-logs', icon: <MessageOutlined />, label: 'SMS log' },
       { key: '/shifts', icon: <FieldTimeOutlined />, label: 'Smenalar' },
       { key: '/employees', icon: <TeamOutlined />, label: 'Xodimlar' },
       { key: '/shops', icon: <ShopOutlined />, label: "Do'konlar" },

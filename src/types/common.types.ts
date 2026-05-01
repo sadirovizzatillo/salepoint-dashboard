@@ -13,4 +13,4 @@ export interface ApiError {
   statusCode: number
 }
 
-export type SubscriptionStatus = 'active' | 'SUSPENDED' | 'EXPIRED' | 'trial'
+export type SubscriptionStatus = 'trial' | 'active' | 'expired' | 'suspended'

@@ -3,6 +3,7 @@ import { Row, Col, Card, Button, Modal, Form, Input, Empty, Spin, Space } from '
 import { PlusOutlined, AppstoreOutlined, ReloadOutlined } from '@ant-design/icons'
 import { useCategories, useCreateCategory } from '@/hooks/useCategories'
 import PageHeader from '@/components/common/PageHeader'
+import { Category } from '@/types/category.types'
 
 export default function CategoriesPage() {
   const [modalOpen, setModalOpen] = useState(false)
@@ -11,7 +12,7 @@ export default function CategoriesPage() {
   const { data: categories, isLoading, isFetching, refetch } = useCategories()
   const createMutation = useCreateCategory()
 
-    const handleCardClick =  (item) => {
+    const handleCardClick = (item: Category) => {
         console.log(item)
     }
 
