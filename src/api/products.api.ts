@@ -1,5 +1,14 @@
+import axios from 'axios'
 import { client } from './client'
-import { Product, CreateProductRequest, UpdateProductRequest, ProductFilters } from '@/types/product.types'
+import {
+  Product,
+  CreateProductRequest,
+  UpdateProductRequest,
+  ProductFilters,
+  ImageUploadUrlRequest,
+  ImageUploadUrlResponse,
+  ConfirmImageRequest,
+} from '@/types/product.types'
 import { PaginatedResponse } from '@/types/common.types'
 
 export const productsApi = {
@@ -30,5 +39,30 @@ export const productsApi = {
 
   delete: async (id: string): Promise<void> => {
     await client.delete(`/products/${id}`)
+  },
+
+  getImageUploadUrl: async (
+    id: string,
+    body: ImageUploadUrlRequest,
+  ): Promise<ImageUploadUrlResponse> => {
+    const { data } = await client.post(`/products/${id}/image/upload-url`, body)
+    return data
+  },
+
+  putToSpaces: async (uploadUrl: string, file: File | Blob): Promise<void> => {
+    await axios.put(uploadUrl, file, {
+      headers: { 'Content-Type': file.type },
+      transformRequest: [(d) => d],
+    })
+  },
+
+  confirmImage: async (id: string, body: ConfirmImageRequest): Promise<Product> => {
+    const { data } = await client.patch(`/products/${id}/image`, body)
+    return data
+  },
+
+  removeImage: async (id: string): Promise<Product> => {
+    const { data } = await client.delete(`/products/${id}/image`)
+    return data
   },
 }

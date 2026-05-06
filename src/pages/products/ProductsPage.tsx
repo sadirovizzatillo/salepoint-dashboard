@@ -5,7 +5,7 @@ import {
 } from 'antd'
 import {
   PlusOutlined, SearchOutlined, EditOutlined,
-  DeleteOutlined, BarcodeOutlined, ReloadOutlined,
+  DeleteOutlined, BarcodeOutlined, ReloadOutlined, PictureOutlined,
 } from '@ant-design/icons'
 import {
   useProducts, useCreateProduct, useUpdateProduct, useDeleteProduct,
@@ -13,6 +13,7 @@ import {
 import { useCategories } from '@/hooks/useCategories'
 import PageHeader from '@/components/common/PageHeader'
 import StatusBadge from '@/components/common/StatusBadge'
+import ProductImageUploader from '@/components/common/ProductImageUploader'
 import { Product, CreateProductRequest, ProductFilters } from '@/types/product.types'
 import { formatCurrency } from '@/utils/formatters'
 
@@ -58,6 +59,31 @@ export default function ProductsPage() {
   }
 
   const columns = [
+    {
+      title: '',
+      key: 'image',
+      width: 56,
+      render: (_: unknown, r: Product) => (
+        <div
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 8,
+            background: '#f1f5f9',
+            overflow: 'hidden',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {r.imageUrl ? (
+            <img src={r.imageUrl} alt={r.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          ) : (
+            <PictureOutlined style={{ color: '#cbd5e1', fontSize: 16 }} />
+          )}
+        </div>
+      ),
+    },
     {
       title: 'SKU',
       dataIndex: 'sku',
@@ -261,6 +287,14 @@ export default function ProductsPage() {
         okButtonProps={{ style: { background: '#6366f1', border: 'none' } }}
       >
         <Form form={form} layout="vertical" style={{ marginTop: 16 }}>
+          <div style={{ marginBottom: 16 }}>
+            <div style={{ fontSize: 13, color: '#475569', marginBottom: 8 }}>Rasm</div>
+            <ProductImageUploader
+              productId={editing?.id ?? null}
+              imageUrl={editing?.imageUrl}
+            />
+          </div>
+
           <Row gutter={12}>
             <Col span={14}>
               <Form.Item name="name" label="Mahsulot nomi" rules={[{ required: true, message: 'Nom kiriting' }]}>

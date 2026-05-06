@@ -40,3 +40,28 @@ export interface ProductFilters {
   categoryId?: string
   active?: boolean
 }
+
+export type AllowedImageMime = 'image/jpeg' | 'image/png' | 'image/webp'
+
+export const ALLOWED_IMAGE_MIMES: AllowedImageMime[] = [
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+]
+
+export const MAX_IMAGE_BYTES = 5 * 1024 * 1024
+
+export interface ImageUploadUrlRequest {
+  contentType: AllowedImageMime
+  size: number
+}
+
+export interface ImageUploadUrlResponse {
+  uploadUrl: string
+  key: string
+  expiresIn: number
+}
+
+export interface ConfirmImageRequest {
+  key: string
+}
