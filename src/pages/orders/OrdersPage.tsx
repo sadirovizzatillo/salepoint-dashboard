@@ -1,12 +1,18 @@
 import { useState } from 'react'
-import { Table, Select, DatePicker, Space, Typography, Empty, Tag, Button } from 'antd'
-import { ReloadOutlined } from '@ant-design/icons'
+import { Table, Select, DatePicker, Space, Typography, Empty, Tag, Button, Tooltip } from 'antd'
+import { ReloadOutlined, PrinterOutlined } from '@ant-design/icons'
 import { useOrders } from '@/hooks/useOrders'
+import { useAuthStore } from '@/store'
 import PageHeader from '@/components/common/PageHeader'
 import StatusBadge from '@/components/common/StatusBadge'
-import { OrderFilters, OrderStatus } from '@/types/order.types'
+import { Order, OrderFilters, OrderStatus } from '@/types/order.types'
 import { formatCurrency, formatDateTime } from '@/utils/formatters'
+import { printReceipt } from '@/utils/printReceipt'
 import dayjs, { Dayjs } from 'dayjs'
+
+function parseJwt(token: string) {
+  try { return JSON.parse(atob(token.split('.')[1])) } catch { return {} }
+}
 
 const { RangePicker } = DatePicker
 const { Option } = Select
@@ -15,6 +21,8 @@ const { Text } = Typography
 export default function OrdersPage() {
   const [filters, setFilters] = useState<OrderFilters>({ page: 1, limit: 10 })
   const { data, isLoading, isFetching, refetch } = useOrders(filters)
+  const { accessToken } = useAuthStore()
+  const shopName = accessToken ? (parseJwt(accessToken).shopName ?? "Do'kon") : "Do'kon"
 
   const handleRangeChange = (_: any, dates: [string, string]) => {
     setFilters((f) => ({ ...f, from: dates[0] || undefined, to: dates[1] || undefined, page: 1 }))
@@ -78,6 +86,22 @@ export default function OrdersPage() {
       dataIndex: 'status',
       key: 'status',
       render: (v: OrderStatus) => <StatusBadge status={v} />,
+    },
+    {
+      title: '',
+      key: 'actions',
+      width: 56,
+      render: (_: unknown, record: Order) => (
+        <Tooltip title="Chekni chop etish">
+          <Button
+            type="text"
+            size="small"
+            icon={<PrinterOutlined />}
+            onClick={() => printReceipt(record, shopName)}
+            style={{ color: '#6366f1' }}
+          />
+        </Tooltip>
+      ),
     },
   ]
 

@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import {
   Table, Button, Input, Select, Space, Tag, Modal, Form,
-  InputNumber, Switch, Popconfirm, Tooltip, Row, Col, Empty,
+  InputNumber, Switch, Popconfirm, Tooltip, Row, Col, Empty, Image,
 } from 'antd'
 import {
   PlusOutlined, SearchOutlined, EditOutlined,
-  DeleteOutlined, BarcodeOutlined, ReloadOutlined, PictureOutlined,
+  DeleteOutlined, BarcodeOutlined, ReloadOutlined, PictureOutlined, EyeOutlined,
 } from '@ant-design/icons'
 import {
   useProducts, useCreateProduct, useUpdateProduct, useDeleteProduct,
@@ -63,26 +63,33 @@ export default function ProductsPage() {
       title: '',
       key: 'image',
       width: 56,
-      render: (_: unknown, r: Product) => (
-        <div
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: 8,
-            background: '#f1f5f9',
-            overflow: 'hidden',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          {r.imageUrl ? (
-            <img src={r.imageUrl} alt={r.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          ) : (
+      render: (_: unknown, r: Product) =>
+        r.imageUrl ? (
+          <Image
+            src={r.imageUrl}
+            alt={r.name}
+            width={40}
+            height={40}
+            style={{ borderRadius: 8, objectFit: 'cover', cursor: 'zoom-in' }}
+            preview={{
+              mask: <EyeOutlined style={{ fontSize: 14 }} />,
+            }}
+          />
+        ) : (
+          <div
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 8,
+              background: '#f1f5f9',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
             <PictureOutlined style={{ color: '#cbd5e1', fontSize: 16 }} />
-          )}
-        </div>
-      ),
+          </div>
+        ),
     },
     {
       title: 'SKU',
