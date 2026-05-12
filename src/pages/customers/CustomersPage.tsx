@@ -46,7 +46,18 @@ export default function CustomersPage() {
     setModalOpen(false)
   }
 
+  const pageOffset = (page - 1) * 10
+
   const columns = [
+    {
+      title: '#',
+      key: 'rowNumber',
+      width: 50,
+      align: 'center' as const,
+      render: (_: unknown, __: unknown, i: number) => (
+        <span style={{ fontSize: 12, color: '#94a3b8' }}>{pageOffset + i + 1}</span>
+      ),
+    },
     {
       title: 'Ism',
       dataIndex: 'name',

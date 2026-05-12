@@ -28,7 +28,18 @@ export default function OrdersPage() {
     setFilters((f) => ({ ...f, from: dates[0] || undefined, to: dates[1] || undefined, page: 1 }))
   }
 
+  const pageOffset = ((filters.page ?? 1) - 1) * (filters.limit ?? 10)
+
   const columns = [
+    {
+      title: '#',
+      key: 'rowNumber',
+      width: 50,
+      align: 'center' as const,
+      render: (_: unknown, __: unknown, i: number) => (
+        <Text style={{ fontSize: 12, color: '#94a3b8' }}>{pageOffset + i + 1}</Text>
+      ),
+    },
     {
       title: 'ID',
       dataIndex: 'id',

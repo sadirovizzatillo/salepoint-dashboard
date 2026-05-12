@@ -1,3 +1,5 @@
+export type UnitType = 'piece' | 'meter' | 'kilogram'
+
 export interface Product {
   id: string
   name: string
@@ -8,6 +10,7 @@ export interface Product {
   taxRate?: number
   isActive: boolean
   trackStock: boolean
+  unitType: UnitType
   categoryId?: string
   categoryName?: string
   description?: string
@@ -26,6 +29,7 @@ export interface CreateProductRequest {
   taxRate?: number
   isActive: boolean
   trackStock: boolean
+  unitType: UnitType
   categoryId?: string
   description?: string
   imageUrl?: string

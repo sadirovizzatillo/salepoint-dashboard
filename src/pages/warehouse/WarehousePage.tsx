@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {
   Table, Button, InputNumber, Input, Modal, Form,
-  Switch, Space, Tooltip, Empty, Tag, Row, Col,
+  Switch, Space, Tooltip, Empty, Tag, Row, Col, Select,
 } from 'antd'
 import { PlusOutlined, EditOutlined, ReloadOutlined } from '@ant-design/icons'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
@@ -60,7 +60,18 @@ export default function WarehousePage() {
     setAdjustModal(item.productId)
   }
 
+  const pageOffset = (page - 1) * limit
+
   const columns = [
+    {
+      title: '#',
+      key: 'rowNumber',
+      width: 50,
+      align: 'center' as const,
+      render: (_: any, __: any, i: number) => (
+        <span style={{ fontSize: 12, color: '#94a3b8' }}>{pageOffset + i + 1}</span>
+      ),
+    },
     {
       title: 'Mahsulot',
       key: 'product',
@@ -80,7 +91,7 @@ export default function WarehousePage() {
           : '—',
     },
     {
-      title: 'Narxi',
+      title: 'Sotish narxi',
       key: 'price',
       align: 'right' as const,
       render: (_: any, r: WarehouseItem) => (
@@ -122,22 +133,22 @@ export default function WarehousePage() {
         <span style={{ fontSize: 13, color: '#64748b' }}>{v}</span>
       ),
     },
-    {
-      title: '',
-      key: 'actions',
-      width: 60,
-      render: (_: any, record: WarehouseItem) => (
-        <Tooltip title="Zahirani sozlash">
-          <Button
-            type="text"
-            size="small"
-            icon={<EditOutlined />}
-            onClick={() => openAdjust(record)}
-            style={{ color: '#64748b' }}
-          />
-        </Tooltip>
-      ),
-    },
+    // {
+    //   title: '',
+    //   key: 'actions',
+    //   width: 60,
+    //   render: (_: any, record: WarehouseItem) => (
+    //     <Tooltip title="Zahirani sozlash">
+    //       <Button
+    //         type="text"
+    //         size="small"
+    //         icon={<EditOutlined />}
+    //         onClick={() => openAdjust(record)}
+    //         style={{ color: '#64748b' }}
+    //       />
+    //     </Tooltip>
+    //   ),
+    // },
   ]
 
   return (
@@ -199,18 +210,19 @@ export default function WarehousePage() {
       >
         <Form form={addForm} layout="vertical" style={{ marginTop: 16 }}>
           <Form.Item name="productId" label="Mahsulot" rules={[{ required: true, message: 'Mahsulot tanlang' }]}>
-            <select
-              style={{
-                width: '100%', height: 32, borderRadius: 6,
-                border: '1px solid #d9d9d9', padding: '0 8px', fontSize: 14,
-              }}
-              onChange={(e) => addForm.setFieldValue('productId', e.target.value)}
-            >
-              <option value="">Tanlang...</option>
-              {products.map((p: any) => (
-                <option key={p.id} value={p.id}>{p.name} ({p.sku})</option>
-              ))}
-            </select>
+            <Select
+              showSearch
+              placeholder="Mahsulot tanlang yoki qidiring..."
+              optionFilterProp="label"
+              filterOption={(input, option) =>
+                (option?.label as string ?? '').toLowerCase().includes(input.toLowerCase())
+              }
+              options={products.map((p: any) => ({
+                value: p.id,
+                label: `${p.name} (${p.sku})`,
+              }))}
+              allowClear
+            />
           </Form.Item>
           <Row gutter={12}>
             <Col span={12}>

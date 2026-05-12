@@ -34,7 +34,7 @@ export default function ProductsPage() {
   const openAdd = () => {
     setEditing(null)
     form.resetFields()
-    form.setFieldsValue({ isActive: true, trackStock: true, taxRate: 0 })
+    form.setFieldsValue({ isActive: true, trackStock: true, taxRate: 0, unitType: 'piece' })
     setModalOpen(true)
   }
 
@@ -46,10 +46,11 @@ export default function ProductsPage() {
 
   const handleSubmit = async () => {
     const values = await form.validateFields()
+    const payload = { ...values, price: 0, costPrice: 0 }
     if (editing) {
-      await updateMutation.mutateAsync({ id: editing.id, body: values })
+      await updateMutation.mutateAsync({ id: editing.id, body: payload })
     } else {
-      await createMutation.mutateAsync(values as CreateProductRequest)
+      await createMutation.mutateAsync(payload as CreateProductRequest)
     }
     setModalOpen(false)
   }
@@ -58,7 +59,18 @@ export default function ProductsPage() {
     deleteMutation.mutate(id)
   }
 
+  const pageOffset = ((filters.page ?? 1) - 1) * (filters.limit ?? 10)
+
   const columns = [
+    {
+      title: '#',
+      key: 'rowNumber',
+      width: 50,
+      align: 'center' as const,
+      render: (_: unknown, __: unknown, i: number) => (
+        <span style={{ fontSize: 12, color: '#94a3b8' }}>{pageOffset + i + 1}</span>
+      ),
+    },
     {
       title: '',
       key: 'image',
@@ -114,10 +126,10 @@ export default function ProductsPage() {
       ),
     },
     {
-      title: 'Narxi',
+      title: 'Sotish narxi',
       dataIndex: 'price',
       key: 'price',
-      align: 'right' as const,
+      align: 'center' as const,
       render: (v: number) => (
         <span style={{ fontWeight: 500, fontSize: 13, color: '#0f172a' }}>
           {formatCurrency(v)}
@@ -128,7 +140,7 @@ export default function ProductsPage() {
       title: 'Tannarxi',
       dataIndex: 'costPrice',
       key: 'costPrice',
-      align: 'right' as const,
+      align: 'center' as const,
       render: (v: number) => (
         <span style={{ fontSize: 12, color: '#64748b' }}>{formatCurrency(v)}</span>
       ),
@@ -137,8 +149,23 @@ export default function ProductsPage() {
       title: 'Kategoriya',
       dataIndex: ['category', 'name'],
       key: 'categoryName',
+        align: 'center' as const,
       render: (v: string) =>
         v ? <Tag style={{ fontSize: 11, borderRadius: 20 }}>{v}</Tag> : '—',
+    },
+    {
+      title: "O'lchov miqdori",
+      dataIndex: 'unitType',
+      key: 'unitType',
+      width: 130,
+        align: 'center' as const,
+      render: (v: Product['unitType']) => {
+        const label =
+          v === 'meter' ? 'Metr' :
+          v === 'kilogram' ? 'Kilogramm' :
+          v === 'piece' ? 'Dona' : '—'
+        return <span style={{ fontSize: 12, color: '#64748b' }}>{label}</span>
+      },
     },
     {
       title: 'Holat',
@@ -317,19 +344,6 @@ export default function ProductsPage() {
 
           <Row gutter={12}>
             <Col span={12}>
-              <Form.Item name="price" label="Narxi (so'm)" rules={[{ required: true, message: 'Narx kiriting' }]}>
-                <InputNumber style={{ width: '100%' }} placeholder="0" min={0} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item name="costPrice" label="Tannarxi (so'm)" rules={[{ required: true, message: 'Tannarx kiriting' }]}>
-                <InputNumber style={{ width: '100%' }} placeholder="0" min={0} />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={12}>
-            <Col span={12}>
               <Form.Item name="barcode" label="Shtrix-kod">
                 <Input placeholder="1234567890" />
               </Form.Item>
@@ -346,17 +360,35 @@ export default function ProductsPage() {
           </Row>
 
           <Row gutter={12}>
-            <Col span={8}>
+            <Col span={12}>
+              <Form.Item
+                name="unitType"
+                label="O'lchov miqdori"
+                rules={[{ required: true, message: "O'lchov miqdorini tanlang" }]}
+              >
+                <Select
+                  options={[
+                    { value: 'piece', label: 'Dona' },
+                    { value: 'meter', label: 'Metr' },
+                    { value: 'kilogram', label: 'Kilogramm' },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
               <Form.Item name="taxRate" label="Soliq (%)">
                 <InputNumber style={{ width: '100%' }} min={0} max={100} placeholder="0" />
               </Form.Item>
             </Col>
-            <Col span={8}>
+          </Row>
+
+          <Row gutter={12}>
+            <Col span={12}>
               <Form.Item name="isActive" label="Faol" valuePropName="checked">
                 <Switch />
               </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col span={12}>
               <Form.Item name="trackStock" label="Zahirani kuzat" valuePropName="checked">
                 <Switch />
               </Form.Item>

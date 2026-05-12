@@ -314,7 +314,18 @@ export default function TransactionsPage() {
   const paidCount = orders.filter((o) => o.status === 'PAID').length
   const pendingCount = orders.filter((o) => o.status === 'PENDING').length
 
+  const pageOffset = ((filters.page ?? 1) - 1) * (filters.limit ?? 20)
+
   const columns = [
+    {
+      title: '#',
+      key: 'rowNumber',
+      width: 50,
+      align: 'center' as const,
+      render: (_: any, __: any, i: number) => (
+        <Text style={{ fontSize: 12, color: '#94a3b8' }}>{pageOffset + i + 1}</Text>
+      ),
+    },
     {
       title: 'Tranzaksiya',
       dataIndex: 'id',

@@ -116,7 +116,18 @@ export default function SmsLogsPage() {
     setPage(1)
   }
 
+  const pageOffset = ((meta?.page ?? page) - 1) * (meta?.limit ?? limit)
+
   const columns = [
+    {
+      title: '#',
+      key: 'rowNumber',
+      width: 50,
+      align: 'center' as const,
+      render: (_: unknown, __: unknown, i: number) => (
+        <Text style={{ fontSize: 12, color: '#94a3b8' }}>{pageOffset + i + 1}</Text>
+      ),
+    },
     {
       title: 'Sana',
       dataIndex: 'createdAt',

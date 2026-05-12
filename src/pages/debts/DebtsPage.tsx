@@ -163,7 +163,18 @@ export default function DebtsPage() {
     setSmsTarget(null)
   }
 
+  const pageOffset = (page - 1) * 20
+
   const columns = [
+    {
+      title: '#',
+      key: 'rowNumber',
+      width: 50,
+      align: 'center' as const,
+      render: (_: unknown, __: unknown, i: number) => (
+        <Text style={{ fontSize: 12, color: '#94a3b8' }}>{pageOffset + i + 1}</Text>
+      ),
+    },
     {
       title: 'Mijoz',
       dataIndex: 'customerName',
@@ -242,7 +253,7 @@ export default function DebtsPage() {
     <div>
       <PageHeader
         title="Qarzdorlar"
-        subtitle={`Jami: ${data?.meta?.total ?? 0} ta qarzdor mijoz`}
+        subtitle={`Jami: ${data?.data?.length ?? 0} ta qarzdor mijoz`}
         extra={
           <Button
             icon={<ReloadOutlined />}

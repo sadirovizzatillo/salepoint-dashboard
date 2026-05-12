@@ -44,6 +44,15 @@ export default function EmployeesPage() {
 
   const columns = [
     {
+      title: '#',
+      key: 'rowNumber',
+      width: 50,
+      align: 'center' as const,
+      render: (_: unknown, __: unknown, i: number) => (
+        <Text style={{ fontSize: 12, color: '#94a3b8' }}>{i + 1}</Text>
+      ),
+    },
+    {
       title: 'Ism',
       key: 'name',
       render: (_: unknown, record: StaffMember) => (

@@ -26,6 +26,15 @@ export default function CustomerDebtsPage() {
 
   const columns = [
     {
+      title: '#',
+      key: 'rowNumber',
+      width: 50,
+      align: 'center' as const,
+      render: (_: unknown, __: unknown, i: number) => (
+        <Text style={{ fontSize: 12, color: '#94a3b8' }}>{i + 1}</Text>
+      ),
+    },
+    {
       title: 'Sana',
       dataIndex: 'createdAt',
       render: (v: string) => <Text style={{ fontSize: 12 }}>{formatDate(v)}</Text>,

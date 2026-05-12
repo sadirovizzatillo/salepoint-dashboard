@@ -28,6 +28,16 @@ export default function ShiftsPage() {
 
   const columns = [
     {
+      title: '#',
+      key: 'rowNumber',
+      width: 50,
+      align: 'center' as const,
+      fixed: 'left' as const,
+      render: (_: any, __: any, i: number) => (
+        <Text style={{ fontSize: 12, color: '#94a3b8' }}>{i + 1}</Text>
+      ),
+    },
+    {
       title: 'Kassir',
       key: 'cashier',
       render: (_: any, r: Shift) => (
