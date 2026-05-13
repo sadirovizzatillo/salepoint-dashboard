@@ -25,7 +25,7 @@ export const useCreateStaff = () => {
       if (status === 403) {
         message.error("Tarif rejangizni yangilang — xodimlar limiti to'ldi")
       } else if (status === 409) {
-        message.error('Bu email allaqachon xodimlar ro\'yxatida')
+        message.error("Bu email allaqachon xodimlar ro'yxatida")
       } else {
         message.error('Xatolik yuz berdi')
       }

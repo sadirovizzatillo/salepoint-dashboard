@@ -1,17 +1,40 @@
 import { useState } from 'react'
 import {
-  Table, Select, DatePicker, Input, Drawer, Descriptions,
-  Typography, Empty, Tag, Divider, Spin, Button,
+  Table,
+  Select,
+  DatePicker,
+  Input,
+  Drawer,
+  Descriptions,
+  Typography,
+  Empty,
+  Tag,
+  Divider,
+  Spin,
+  Button,
 } from 'antd'
 import {
-  SearchOutlined, ShoppingCartOutlined, UserOutlined,
-  CalendarOutlined, DollarOutlined, PhoneOutlined,
-  StarOutlined, TrophyOutlined, ReloadOutlined,
+  SearchOutlined,
+  ShoppingCartOutlined,
+  UserOutlined,
+  CalendarOutlined,
+  DollarOutlined,
+  PhoneOutlined,
+  StarOutlined,
+  TrophyOutlined,
+  ReloadOutlined,
 } from '@ant-design/icons'
 import { useOrders, useOrder } from '@/hooks/useOrders'
 import PageHeader from '@/components/common/PageHeader'
 import StatusBadge from '@/components/common/StatusBadge'
-import { Order, OrderCashier, OrderCustomer, OrderItem, OrderFilters, OrderStatus } from '@/types/order.types'
+import {
+  Order,
+  OrderCashier,
+  OrderCustomer,
+  OrderItem,
+  OrderFilters,
+  OrderStatus,
+} from '@/types/order.types'
 import { formatCurrency, formatDateTime } from '@/utils/formatters'
 import dayjs from 'dayjs'
 
@@ -20,40 +43,58 @@ const { Option } = Select
 const { Text } = Typography
 
 const STATUS_OPTIONS: { value: OrderStatus; label: string }[] = [
-  { value: 'PENDING',   label: 'Kutilmoqda' },
-  { value: 'PAID',      label: "To'langan" },
+  { value: 'PENDING', label: 'Kutilmoqda' },
+  { value: 'PAID', label: "To'langan" },
   { value: 'CANCELLED', label: 'Bekor qilingan' },
-  { value: 'REFUNDED',  label: 'Qaytarilgan' },
+  { value: 'REFUNDED', label: 'Qaytarilgan' },
 ]
 
 const STATUS_COLORS: Record<OrderStatus, string> = {
-  PAID:      '#059669',
-  PENDING:   '#d97706',
+  PAID: '#059669',
+  PENDING: '#d97706',
   CANCELLED: '#dc2626',
-  REFUNDED:  '#7c3aed',
+  REFUNDED: '#7c3aed',
 }
 
-function SummaryCard({ label, value, icon, color = '#6366f1' }: {
-  label: string; value: string; icon: React.ReactNode; color?: string
+function SummaryCard({
+  label,
+  value,
+  icon,
+  color = '#6366f1',
+}: {
+  label: string
+  value: string
+  icon: React.ReactNode
+  color?: string
 }) {
   return (
-    <div style={{
-      flex: 1,
-      minWidth: 160,
-      background: '#fff',
-      border: '0.5px solid #e2e8f0',
-      borderRadius: 12,
-      padding: '14px 18px',
-      display: 'flex',
-      alignItems: 'center',
-      gap: 12,
-    }}>
-      <div style={{
-        width: 36, height: 36, borderRadius: 10,
-        background: `${color}18`,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        color, fontSize: 16, flexShrink: 0,
-      }}>
+    <div
+      style={{
+        flex: 1,
+        minWidth: 160,
+        background: '#fff',
+        border: '0.5px solid #e2e8f0',
+        borderRadius: 12,
+        padding: '14px 18px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 12,
+      }}
+    >
+      <div
+        style={{
+          width: 36,
+          height: 36,
+          borderRadius: 10,
+          background: `${color}18`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color,
+          fontSize: 16,
+          flexShrink: 0,
+        }}
+      >
         {icon}
       </div>
       <div>
@@ -67,38 +108,62 @@ function SummaryCard({ label, value, icon, color = '#6366f1' }: {
 function CashierCard({ cashier }: { cashier: OrderCashier }) {
   const initials = cashier.name
     .split(' ')
-    .map((n) => n[0])
+    .map(n => n[0])
     .join('')
     .toUpperCase()
     .slice(0, 2)
 
   return (
-    <div style={{
-      background: '#f0fdf4',
-      border: '0.5px solid #bbf7d0',
-      borderRadius: 10,
-      padding: '10px 14px',
-      display: 'flex',
-      alignItems: 'center',
-      gap: 10,
-    }}>
-      <div style={{
-        width: 30, height: 30, borderRadius: 8, background: '#dcfce7',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        color: '#16a34a', fontSize: 11, fontWeight: 700, flexShrink: 0,
-      }}>
-        {cashier.avatarUrl
-          ? <img src={cashier.avatarUrl} style={{ width: 30, height: 30, borderRadius: 8, objectFit: 'cover' }} />
-          : initials}
+    <div
+      style={{
+        background: '#f0fdf4',
+        border: '0.5px solid #bbf7d0',
+        borderRadius: 10,
+        padding: '10px 14px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 10,
+      }}
+    >
+      <div
+        style={{
+          width: 30,
+          height: 30,
+          borderRadius: 8,
+          background: '#dcfce7',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#16a34a',
+          fontSize: 11,
+          fontWeight: 700,
+          flexShrink: 0,
+        }}
+      >
+        {cashier.avatarUrl ? (
+          <img
+            src={cashier.avatarUrl}
+            style={{ width: 30, height: 30, borderRadius: 8, objectFit: 'cover' }}
+          />
+        ) : (
+          initials
+        )}
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ fontSize: 12, fontWeight: 600, color: '#0f172a' }}>{cashier.name}</div>
         <div style={{ fontSize: 11, color: '#64748b' }}>{cashier.email}</div>
       </div>
-      <div style={{
-        background: '#dcfce7', color: '#16a34a', borderRadius: 20,
-        padding: '2px 8px', fontSize: 10, fontWeight: 600, whiteSpace: 'nowrap',
-      }}>
+      <div
+        style={{
+          background: '#dcfce7',
+          color: '#16a34a',
+          borderRadius: 20,
+          padding: '2px 8px',
+          fontSize: 10,
+          fontWeight: 600,
+          whiteSpace: 'nowrap',
+        }}
+      >
         {cashier.roles[0] ?? 'Kassir'}
       </div>
     </div>
@@ -107,49 +172,89 @@ function CashierCard({ cashier }: { cashier: OrderCashier }) {
 
 function CustomerCard({ customer }: { customer: OrderCustomer }) {
   return (
-    <div style={{
-      background: '#f8fafc',
-      border: '0.5px solid #e2e8f0',
-      borderRadius: 10,
-      padding: '12px 14px',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 8,
-    }}>
+    <div
+      style={{
+        background: '#f8fafc',
+        border: '0.5px solid #e2e8f0',
+        borderRadius: 10,
+        padding: '12px 14px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 8,
+      }}
+    >
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div style={{
-            width: 30, height: 30, borderRadius: 8, background: '#e0e7ff',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: '#6366f1', fontSize: 13,
-          }}>
+          <div
+            style={{
+              width: 30,
+              height: 30,
+              borderRadius: 8,
+              background: '#e0e7ff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#6366f1',
+              fontSize: 13,
+            }}
+          >
             <UserOutlined />
           </div>
           <div>
             <div style={{ fontSize: 12, fontWeight: 600, color: '#0f172a' }}>{customer.name}</div>
-            <div style={{ fontSize: 11, color: '#94a3b8', display: 'flex', alignItems: 'center', gap: 4 }}>
+            <div
+              style={{
+                fontSize: 11,
+                color: '#94a3b8',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 4,
+              }}
+            >
               <PhoneOutlined style={{ fontSize: 10 }} /> {customer.phone}
             </div>
           </div>
         </div>
-        <div style={{
-          background: '#fef9c3', color: '#854d0e', borderRadius: 20,
-          padding: '2px 8px', fontSize: 11, fontWeight: 600,
-          display: 'flex', alignItems: 'center', gap: 4,
-        }}>
+        <div
+          style={{
+            background: '#fef9c3',
+            color: '#854d0e',
+            borderRadius: 20,
+            padding: '2px 8px',
+            fontSize: 11,
+            fontWeight: 600,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 4,
+          }}
+        >
           <StarOutlined style={{ fontSize: 10 }} /> {customer.loyaltyPoints}
         </div>
       </div>
       <div style={{ display: 'flex', gap: 8 }}>
-        <div style={{
-          flex: 1, background: '#fff', borderRadius: 8, padding: '6px 10px', textAlign: 'center',
-        }}>
+        <div
+          style={{
+            flex: 1,
+            background: '#fff',
+            borderRadius: 8,
+            padding: '6px 10px',
+            textAlign: 'center',
+          }}
+        >
           <div style={{ fontSize: 10, color: '#94a3b8' }}>Tashriflar</div>
-          <div style={{ fontSize: 13, fontWeight: 700, color: '#0f172a' }}>{customer.visitCount}</div>
+          <div style={{ fontSize: 13, fontWeight: 700, color: '#0f172a' }}>
+            {customer.visitCount}
+          </div>
         </div>
-        <div style={{
-          flex: 1, background: '#fff', borderRadius: 8, padding: '6px 10px', textAlign: 'center',
-        }}>
+        <div
+          style={{
+            flex: 1,
+            background: '#fff',
+            borderRadius: 8,
+            padding: '6px 10px',
+            textAlign: 'center',
+          }}
+        >
           <div style={{ fontSize: 10, color: '#94a3b8' }}>Jami xarid</div>
           <div style={{ fontSize: 11, fontWeight: 700, color: '#059669' }}>
             {Number(customer.totalSpent).toLocaleString()} so'm
@@ -192,13 +297,26 @@ function OrderDrawer({ orderId, onClose }: { orderId: string; onClose: () => voi
         </div>
       ) : order ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-
           {/* Status + date */}
-          <div style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            background: '#f8fafc', borderRadius: 10, padding: '12px 14px',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#64748b', fontSize: 12 }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              background: '#f8fafc',
+              borderRadius: 10,
+              padding: '12px 14px',
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                color: '#64748b',
+                fontSize: 12,
+              }}
+            >
               <CalendarOutlined />
               {formatDateTime(order.createdAt)}
             </div>
@@ -209,10 +327,16 @@ function OrderDrawer({ orderId, onClose }: { orderId: string; onClose: () => voi
           {order.customer ? (
             <CustomerCard customer={order.customer} />
           ) : (
-            <div style={{
-              background: '#f8fafc', borderRadius: 10, padding: '10px 14px',
-              display: 'flex', alignItems: 'center', gap: 8,
-            }}>
+            <div
+              style={{
+                background: '#f8fafc',
+                borderRadius: 10,
+                padding: '10px 14px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+              }}
+            >
               <UserOutlined style={{ color: '#94a3b8', fontSize: 13 }} />
               <div>
                 <div style={{ fontSize: 10, color: '#94a3b8' }}>Mijoz</div>
@@ -225,10 +349,16 @@ function OrderDrawer({ orderId, onClose }: { orderId: string; onClose: () => voi
           {order.cashier ? (
             <CashierCard cashier={order.cashier} />
           ) : (
-            <div style={{
-              background: '#f8fafc', borderRadius: 10, padding: '10px 14px',
-              display: 'flex', alignItems: 'center', gap: 8,
-            }}>
+            <div
+              style={{
+                background: '#f8fafc',
+                borderRadius: 10,
+                padding: '10px 14px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+              }}
+            >
               <UserOutlined style={{ color: '#10b981', fontSize: 13 }} />
               <div>
                 <div style={{ fontSize: 10, color: '#94a3b8' }}>Kassir</div>
@@ -245,17 +375,33 @@ function OrderDrawer({ orderId, onClose }: { orderId: string; onClose: () => voi
               Mahsulotlar
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              {(order.items ?? []).map((item) => (
-                <div key={item.id} style={{
-                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  background: '#f8fafc', borderRadius: 8, padding: '8px 12px',
-                }}>
+              {(order.items ?? []).map(item => (
+                <div
+                  key={item.id}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    background: '#f8fafc',
+                    borderRadius: 8,
+                    padding: '8px 12px',
+                  }}
+                >
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <div style={{
-                      width: 22, height: 22, borderRadius: 6, background: '#e0e7ff',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: 10, fontWeight: 700, color: '#6366f1',
-                    }}>
+                    <div
+                      style={{
+                        width: 22,
+                        height: 22,
+                        borderRadius: 6,
+                        background: '#e0e7ff',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: 10,
+                        fontWeight: 700,
+                        color: '#6366f1',
+                      }}
+                    >
                       {item.quantity}
                     </div>
                     <div>
@@ -279,16 +425,24 @@ function OrderDrawer({ orderId, onClose }: { orderId: string; onClose: () => voi
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <Text style={{ fontSize: 12, color: '#64748b' }}>Oraliq summa</Text>
-              <Text style={{ fontSize: 12, color: '#0f172a' }}>{formatCurrency(order.subtotal)}</Text>
+              <Text style={{ fontSize: 12, color: '#0f172a' }}>
+                {formatCurrency(order.subtotal)}
+              </Text>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <Text style={{ fontSize: 12, color: '#64748b' }}>Soliq</Text>
               <Text style={{ fontSize: 12, color: '#0f172a' }}>{formatCurrency(order.tax)}</Text>
             </div>
-            <div style={{
-              display: 'flex', justifyContent: 'space-between',
-              background: '#f0fdf4', borderRadius: 8, padding: '10px 12px', marginTop: 4,
-            }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                background: '#f0fdf4',
+                borderRadius: 8,
+                padding: '10px 12px',
+                marginTop: 4,
+              }}
+            >
               <Text style={{ fontSize: 13, fontWeight: 600, color: '#059669' }}>Jami</Text>
               <Text style={{ fontSize: 14, fontWeight: 700, color: '#059669' }}>
                 {formatCurrency(order.total)}
@@ -308,11 +462,9 @@ export default function TransactionsPage() {
 
   const orders = data?.data ?? []
   const total = data?.total ?? 0
-  const totalRevenue = orders
-    .filter((o) => o.status === 'PAID')
-    .reduce((sum, o) => sum + o.total, 0)
-  const paidCount = orders.filter((o) => o.status === 'PAID').length
-  const pendingCount = orders.filter((o) => o.status === 'PENDING').length
+  const totalRevenue = orders.filter(o => o.status === 'PAID').reduce((sum, o) => sum + o.total, 0)
+  const paidCount = orders.filter(o => o.status === 'PAID').length
+  const pendingCount = orders.filter(o => o.status === 'PENDING').length
 
   const pageOffset = ((filters.page ?? 1) - 1) * (filters.limit ?? 20)
 
@@ -359,9 +511,11 @@ export default function TransactionsPage() {
       key: 'customerName',
       render: (_: any, r: Order) => {
         const name = r.customer?.name || r.customerName
-        return name
-          ? <Text style={{ fontSize: 12 }}>{name}</Text>
-          : <Text style={{ fontSize: 12, color: '#cbd5e1' }}>Anonim</Text>
+        return name ? (
+          <Text style={{ fontSize: 12 }}>{name}</Text>
+        ) : (
+          <Text style={{ fontSize: 12, color: '#cbd5e1' }}>Anonim</Text>
+        )
       },
     },
     {
@@ -380,11 +534,13 @@ export default function TransactionsPage() {
       key: 'total',
       align: 'right' as const,
       render: (v: number, r: Order) => (
-        <Text style={{
-          fontWeight: 700,
-          fontSize: 13,
-          color: STATUS_COLORS[r.status] ?? '#0f172a',
-        }}>
+        <Text
+          style={{
+            fontWeight: 700,
+            fontSize: 13,
+            color: STATUS_COLORS[r.status] ?? '#0f172a',
+          }}
+        >
           {formatCurrency(v)}
         </Text>
       ),
@@ -436,29 +592,38 @@ export default function TransactionsPage() {
       </div>
 
       {/* Filters */}
-      <div style={{
-        background: '#fff',
-        border: '0.5px solid #e2e8f0',
-        borderRadius: 12,
-        padding: '12px 16px',
-        display: 'flex',
-        gap: 10,
-        flexWrap: 'wrap',
-        alignItems: 'center',
-      }}>
+      <div
+        style={{
+          background: '#fff',
+          border: '0.5px solid #e2e8f0',
+          borderRadius: 12,
+          padding: '12px 16px',
+          display: 'flex',
+          gap: 10,
+          flexWrap: 'wrap',
+          alignItems: 'center',
+        }}
+      >
         <Select
           placeholder="Holat"
           style={{ width: 160 }}
           allowClear
-          onChange={(v) => setFilters((f) => ({ ...f, status: v, page: 1 }))}
+          onChange={v => setFilters(f => ({ ...f, status: v, page: 1 }))}
         >
-          {STATUS_OPTIONS.map((s) => (
-            <Option key={s.value} value={s.value}>{s.label}</Option>
+          {STATUS_OPTIONS.map(s => (
+            <Option key={s.value} value={s.value}>
+              {s.label}
+            </Option>
           ))}
         </Select>
         <RangePicker
           onChange={(_, dates) =>
-            setFilters((f) => ({ ...f, from: dates[0] || undefined, to: dates[1] || undefined, page: 1 }))
+            setFilters(f => ({
+              ...f,
+              from: dates[0] || undefined,
+              to: dates[1] || undefined,
+              page: 1,
+            }))
           }
           format="DD.MM.YYYY"
           style={{ borderRadius: 8 }}
@@ -474,26 +639,28 @@ export default function TransactionsPage() {
           placeholder="Kassir ID..."
           style={{ width: 200, borderRadius: 8 }}
           allowClear
-          onChange={(e) =>
-            setFilters((f) => ({ ...f, cashierId: e.target.value || undefined, page: 1 }))
+          onChange={e =>
+            setFilters(f => ({ ...f, cashierId: e.target.value || undefined, page: 1 }))
           }
         />
       </div>
 
       {/* Table */}
-      <div style={{
-        background: '#fff',
-        border: '0.5px solid #e2e8f0',
-        borderRadius: 12,
-        overflow: 'hidden',
-      }}>
+      <div
+        style={{
+          background: '#fff',
+          border: '0.5px solid #e2e8f0',
+          borderRadius: 12,
+          overflow: 'hidden',
+        }}
+      >
         <Table
           dataSource={orders}
           columns={columns}
           rowKey="id"
           loading={isLoading}
           locale={{ emptyText: <Empty description="Tranzaksiyalar topilmadi" /> }}
-          onRow={(record) => ({
+          onRow={record => ({
             onClick: () => setSelectedId(record.id),
             style: { cursor: 'pointer' },
           })}
@@ -503,8 +670,8 @@ export default function TransactionsPage() {
             pageSize: filters.limit,
             total,
             showSizeChanger: true,
-            showTotal: (t) => `Jami ${t} ta`,
-            onChange: (page, limit) => setFilters((f) => ({ ...f, page, limit })),
+            showTotal: t => `Jami ${t} ta`,
+            onChange: (page, limit) => setFilters(f => ({ ...f, page, limit })),
             style: { padding: '12px 16px' },
           }}
           size="middle"
@@ -512,9 +679,7 @@ export default function TransactionsPage() {
       </div>
 
       {/* Detail drawer */}
-      {selectedId && (
-        <OrderDrawer orderId={selectedId} onClose={() => setSelectedId(null)} />
-      )}
+      {selectedId && <OrderDrawer orderId={selectedId} onClose={() => setSelectedId(null)} />}
     </div>
   )
 }

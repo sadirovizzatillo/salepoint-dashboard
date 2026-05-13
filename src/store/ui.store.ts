@@ -6,8 +6,8 @@ interface UiState {
   setSidebarCollapsed: (v: boolean) => void
 }
 
-export const useUiStore = create<UiState>((set) => ({
+export const useUiStore = create<UiState>(set => ({
   sidebarCollapsed: false,
-  toggleSidebar: () => set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
-  setSidebarCollapsed: (v) => set({ sidebarCollapsed: v }),
+  toggleSidebar: () => set(s => ({ sidebarCollapsed: !s.sidebarCollapsed })),
+  setSidebarCollapsed: v => set({ sidebarCollapsed: v }),
 }))

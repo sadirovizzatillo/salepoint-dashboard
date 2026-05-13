@@ -18,7 +18,10 @@ export const ordersApi = {
     return data
   },
 
-  returnOrder: async (id: string, body: { items: { productId: string; quantity: number }[]; notes?: string }) => {
+  returnOrder: async (
+    id: string,
+    body: { items: { productId: string; quantity: number }[]; notes?: string }
+  ) => {
     const { data } = await client.post(`/orders/${id}/return`, body)
     return data
   },

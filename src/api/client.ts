@@ -26,7 +26,7 @@ let failedQueue: Array<{
 }> = []
 
 const processQueue = (error: unknown, token: string | null = null) => {
-  failedQueue.forEach((p) => {
+  failedQueue.forEach(p => {
     if (error) p.reject(error)
     else p.resolve(token!)
   })
@@ -34,7 +34,7 @@ const processQueue = (error: unknown, token: string | null = null) => {
 }
 
 client.interceptors.response.use(
-  (res) => {
+  res => {
     const body = res.data
     if (!body || body.data === undefined) return res
     if (body.meta) {
@@ -50,7 +50,7 @@ client.interceptors.response.use(
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject })
-        }).then((token) => {
+        }).then(token => {
           originalRequest.headers.Authorization = `Bearer ${token}`
           return client(originalRequest)
         })
@@ -108,13 +108,11 @@ dashboardClient.interceptors.request.use((config: InternalAxiosRequestConfig) =>
   return config
 })
 
-dashboardClient.interceptors.response.use(
-  (res) => {
-    const body = res.data
-    if (!body || body.data === undefined) return res
-    if (body.meta) {
-      return { ...res, data: { data: body.data, ...body.meta } }
-    }
-    return { ...res, data: body.data }
-  },
-)
+dashboardClient.interceptors.response.use(res => {
+  const body = res.data
+  if (!body || body.data === undefined) return res
+  if (body.meta) {
+    return { ...res, data: { data: body.data, ...body.meta } }
+  }
+  return { ...res, data: body.data }
+})

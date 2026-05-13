@@ -52,7 +52,7 @@ export default function ShopSelectPage() {
           return
         }
       }
-      setError(msg || 'Xatolik yuz berdi. Qayta urinib ko\'ring.')
+      setError(msg || "Xatolik yuz berdi. Qayta urinib ko'ring.")
     } finally {
       setLoading(null)
     }
@@ -76,7 +76,18 @@ export default function ShopSelectPage() {
         padding: 24,
       }}
     >
-      <div style={{ position: 'fixed', top: -120, right: -120, width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
+      <div
+        style={{
+          position: 'fixed',
+          top: -120,
+          right: -120,
+          width: 400,
+          height: 400,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }}
+      />
 
       <div
         style={{
@@ -110,9 +121,7 @@ export default function ShopSelectPage() {
           <Title level={3} style={{ margin: 0, color: '#0f172a', fontWeight: 600 }}>
             Do'kon tanlang
           </Title>
-          <Text style={{ color: '#64748b', fontSize: 14 }}>
-            Davom etish uchun do'konni tanlang
-          </Text>
+          <Text style={{ color: '#64748b', fontSize: 14 }}>Davom etish uchun do'konni tanlang</Text>
         </div>
 
         {error && (
@@ -127,9 +136,13 @@ export default function ShopSelectPage() {
         )}
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {shops.map((shop) => {
-            const status = statusConfig[shop.subscriptionStatus as keyof typeof statusConfig]
-              ?? { label: shop.subscriptionStatus, color: '#64748b', bg: '#f8fafc', border: '#e2e8f0' }
+          {shops.map(shop => {
+            const status = statusConfig[shop.subscriptionStatus as keyof typeof statusConfig] ?? {
+              label: shop.subscriptionStatus,
+              color: '#64748b',
+              bg: '#f8fafc',
+              border: '#e2e8f0',
+            }
             const isActive = shop.subscriptionStatus === 'active'
             const isLoading = loading === shop.id
 
@@ -152,10 +165,10 @@ export default function ShopSelectPage() {
                   transition: 'all 0.15s',
                   opacity: !isActive ? 0.6 : 1,
                 }}
-                onMouseEnter={(e) => {
+                onMouseEnter={e => {
                   if (isActive) (e.currentTarget as HTMLElement).style.borderColor = '#6366f1'
                 }}
-                onMouseLeave={(e) => {
+                onMouseLeave={e => {
                   if (isActive) (e.currentTarget as HTMLElement).style.borderColor = '#e2e8f0'
                 }}
               >
@@ -174,7 +187,11 @@ export default function ShopSelectPage() {
                   }}
                 >
                   {shop.logoUrl ? (
-                    <img src={shop.logoUrl} alt={shop.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <img
+                      src={shop.logoUrl}
+                      alt={shop.name}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
                   ) : (
                     <ShopOutlined style={{ fontSize: 20, color: '#6366f1' }} />
                   )}
@@ -199,8 +216,10 @@ export default function ShopSelectPage() {
                     >
                       {status.label}
                     </span>
-                    {shop.roles.map((r) => (
-                      <Tag key={r} style={{ fontSize: 10, margin: 0 }}>{r}</Tag>
+                    {shop.roles.map(r => (
+                      <Tag key={r} style={{ fontSize: 10, margin: 0 }}>
+                        {r}
+                      </Tag>
                     ))}
                   </div>
                 </div>
@@ -218,7 +237,14 @@ export default function ShopSelectPage() {
           })}
         </div>
 
-        <div style={{ marginTop: 28, paddingTop: 20, borderTop: '0.5px solid #f1f5f9', textAlign: 'center' }}>
+        <div
+          style={{
+            marginTop: 28,
+            paddingTop: 20,
+            borderTop: '0.5px solid #f1f5f9',
+            textAlign: 'center',
+          }}
+        >
           <Text style={{ fontSize: 12, color: '#94a3b8' }}>
             ZPos v1.0 — Do'kon boshqaruv tizimi
           </Text>

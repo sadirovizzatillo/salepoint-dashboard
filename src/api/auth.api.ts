@@ -40,8 +40,12 @@ export const authApi = {
 
   logout: async (): Promise<void> => {
     const token = localStorage.getItem('accessToken')
-    await authAxios.post('/auth/logout', {}, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    await authAxios.post(
+      '/auth/logout',
+      {},
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    )
   },
 }

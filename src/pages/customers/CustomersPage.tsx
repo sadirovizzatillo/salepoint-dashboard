@@ -1,9 +1,12 @@
 import { useState } from 'react'
+import { Table, Button, Input, Modal, Form, Space, Typography, Tooltip, Empty } from 'antd'
 import {
-  Table, Button, Input, Modal, Form, Space, Typography,
-  Tooltip, Empty,
-} from 'antd'
-import { PlusOutlined, SearchOutlined, EditOutlined, EyeOutlined, ReloadOutlined } from '@ant-design/icons'
+  PlusOutlined,
+  SearchOutlined,
+  EditOutlined,
+  EyeOutlined,
+  ReloadOutlined,
+} from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { useCustomers, useCreateCustomer, useUpdateCustomer } from '@/hooks/useCustomers'
 import PageHeader from '@/components/common/PageHeader'
@@ -62,9 +65,7 @@ export default function CustomersPage() {
       title: 'Ism',
       dataIndex: 'name',
       key: 'name',
-      render: (v: string) => (
-        <Text style={{ fontWeight: 500, fontSize: 13 }}>{v}</Text>
-      ),
+      render: (v: string) => <Text style={{ fontWeight: 500, fontSize: 13 }}>{v}</Text>,
     },
     {
       title: 'Telefon',
@@ -78,9 +79,7 @@ export default function CustomersPage() {
       title: 'Izoh',
       dataIndex: 'notes',
       key: 'notes',
-      render: (v: string) => (
-        <Text style={{ fontSize: 12, color: '#94a3b8' }}>{v || '—'}</Text>
-      ),
+      render: (v: string) => <Text style={{ fontSize: 12, color: '#94a3b8' }}>{v || '—'}</Text>,
     },
     {
       title: "Qo'shilgan",
@@ -158,7 +157,10 @@ export default function CustomersPage() {
           placeholder="Ism yoki telefon raqam..."
           style={{ width: 280, borderRadius: 8 }}
           value={search}
-          onChange={(e) => { setSearch(e.target.value); setPage(1) }}
+          onChange={e => {
+            setSearch(e.target.value)
+            setPage(1)
+          }}
           allowClear
         />
       </div>
@@ -181,7 +183,7 @@ export default function CustomersPage() {
             current: page,
             pageSize: 10,
             total: data?.total,
-            showTotal: (t) => `Jami ${t} ta`,
+            showTotal: t => `Jami ${t} ta`,
             onChange: setPage,
             style: { padding: '12px 16px' },
           }}

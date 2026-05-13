@@ -8,5 +8,5 @@ export const useSmsLogs = (params: SmsLogsQuery = {}) =>
   useQuery({
     queryKey: [SMS_LOGS_KEY, params],
     queryFn: () => smsApi.logs(params),
-    placeholderData: (prev) => prev,
+    placeholderData: prev => prev,
   })

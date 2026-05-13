@@ -6,7 +6,7 @@ import { Me } from '@/types/auth.types'
 export const ME_KEY = 'me'
 
 export const useMe = () => {
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
+  const isAuthenticated = useAuthStore(s => s.isAuthenticated)
   return useQuery<Me>({
     queryKey: [ME_KEY],
     queryFn: authApi.me,

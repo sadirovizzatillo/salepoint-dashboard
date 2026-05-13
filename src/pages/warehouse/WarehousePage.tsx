@@ -1,7 +1,19 @@
 import { useState } from 'react'
 import {
-  Table, Button, InputNumber, Input, Modal, Form,
-  Switch, Space, Tooltip, Empty, Tag, Row, Col, Select,
+  Table,
+  Button,
+  InputNumber,
+  Input,
+  Modal,
+  Form,
+  Switch,
+  Space,
+  Tooltip,
+  Empty,
+  Tag,
+  Row,
+  Col,
+  Select,
 } from 'antd'
 import { PlusOutlined, EditOutlined, ReloadOutlined } from '@ant-design/icons'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
@@ -78,7 +90,9 @@ export default function WarehousePage() {
       render: (_: any, r: WarehouseItem) => (
         <div>
           <div style={{ fontWeight: 500, fontSize: 13 }}>{r.product.name}</div>
-          <div style={{ fontSize: 11, color: '#94a3b8', fontFamily: 'monospace' }}>{r.product.sku}</div>
+          <div style={{ fontSize: 11, color: '#94a3b8', fontFamily: 'monospace' }}>
+            {r.product.sku}
+          </div>
         </div>
       ),
     },
@@ -86,14 +100,24 @@ export default function WarehousePage() {
       title: 'Kategoriya',
       key: 'category',
       render: (_: any, r: WarehouseItem) =>
-        r.product.category
-          ? <Tag style={{ fontSize: 11, borderRadius: 20 }}>{r.product.category.name}</Tag>
-          : '—',
+        r.product.category ? (
+          <Tag style={{ fontSize: 11, borderRadius: 20 }}>{r.product.category.name}</Tag>
+        ) : (
+          '—'
+        ),
     },
     {
       title: 'Sotish narxi',
       key: 'price',
-      align: 'right' as const,
+      align: 'center' as const,
+      render: (_: any, r: WarehouseItem) => (
+        <span style={{ fontWeight: 500, fontSize: 13 }}>{formatCurrency(r.product.price)}</span>
+      ),
+    },
+    {
+      title: 'Tannarx',
+      key: 'price',
+      align: 'center' as const,
       render: (_: any, r: WarehouseItem) => (
         <span style={{ fontWeight: 500, fontSize: 13 }}>{formatCurrency(r.product.price)}</span>
       ),
@@ -107,31 +131,30 @@ export default function WarehousePage() {
       render: (v: number, r: WarehouseItem) => {
         const low = v <= r.reorderPoint
         return (
-          <Tag color={low ? 'red' : 'green'} style={{ fontWeight: 600, minWidth: 40, textAlign: 'center' }}>
+          <Tag
+            color={low ? 'red' : 'green'}
+            style={{ fontWeight: 600, minWidth: 40, textAlign: 'center' }}
+          >
             {v}
           </Tag>
         )
       },
     },
-    {
-      title: 'Band',
-      dataIndex: 'quantityReserved',
-      key: 'quantityReserved',
-      width: 80,
-      align: 'center' as const,
-      render: (v: number) => (
-        <span style={{ fontSize: 13, color: '#64748b' }}>{v}</span>
-      ),
-    },
+    // {
+    //   title: 'Band',
+    //   dataIndex: 'quantityReserved',
+    //   key: 'quantityReserved',
+    //   width: 80,
+    //   align: 'center' as const,
+    //   render: (v: number) => <span style={{ fontSize: 13, color: '#64748b' }}>{v}</span>,
+    // },
     {
       title: 'Min. chegara',
       dataIndex: 'reorderPoint',
       key: 'reorderPoint',
       width: 110,
       align: 'center' as const,
-      render: (v: number) => (
-        <span style={{ fontSize: 13, color: '#64748b' }}>{v}</span>
-      ),
+      render: (v: number) => <span style={{ fontSize: 13, color: '#64748b' }}>{v}</span>,
     },
     // {
     //   title: '',
@@ -167,7 +190,10 @@ export default function WarehousePage() {
             <Button
               type="primary"
               icon={<PlusOutlined />}
-              onClick={() => { addForm.resetFields(); setAddModal(true) }}
+              onClick={() => {
+                addForm.resetFields()
+                setAddModal(true)
+              }}
               style={{ borderRadius: 8, background: '#6366f1', border: 'none' }}
             >
               Omborga qo'shish
@@ -176,7 +202,14 @@ export default function WarehousePage() {
         }
       />
 
-      <div style={{ background: '#fff', border: '0.5px solid #e2e8f0', borderRadius: 12, overflow: 'hidden' }}>
+      <div
+        style={{
+          background: '#fff',
+          border: '0.5px solid #e2e8f0',
+          borderRadius: 12,
+          overflow: 'hidden',
+        }}
+      >
         <Table
           dataSource={data?.data ?? []}
           columns={columns}
@@ -188,8 +221,11 @@ export default function WarehousePage() {
             pageSize: limit,
             total: data?.total,
             showSizeChanger: true,
-            showTotal: (t) => `Jami ${t} ta`,
-            onChange: (p, l) => { setPage(p); setLimit(l) },
+            showTotal: t => `Jami ${t} ta`,
+            onChange: (p, l) => {
+              setPage(p)
+              setLimit(l)
+            },
             style: { padding: '12px 16px' },
           }}
           size="middle"
@@ -201,7 +237,7 @@ export default function WarehousePage() {
         title="Omborga qo'shish"
         open={addModal}
         onCancel={() => setAddModal(false)}
-        onOk={() => addForm.validateFields().then((v) => addMutation.mutate(v))}
+        onOk={() => addForm.validateFields().then(v => addMutation.mutate(v))}
         okText="Qo'shish"
         cancelText="Bekor qilish"
         confirmLoading={addMutation.isPending}
@@ -209,13 +245,17 @@ export default function WarehousePage() {
         okButtonProps={{ style: { background: '#6366f1', border: 'none' } }}
       >
         <Form form={addForm} layout="vertical" style={{ marginTop: 16 }}>
-          <Form.Item name="productId" label="Mahsulot" rules={[{ required: true, message: 'Mahsulot tanlang' }]}>
+          <Form.Item
+            name="productId"
+            label="Mahsulot"
+            rules={[{ required: true, message: 'Mahsulot tanlang' }]}
+          >
             <Select
               showSearch
               placeholder="Mahsulot tanlang yoki qidiring..."
               optionFilterProp="label"
               filterOption={(input, option) =>
-                (option?.label as string ?? '').toLowerCase().includes(input.toLowerCase())
+                ((option?.label as string) ?? '').toLowerCase().includes(input.toLowerCase())
               }
               options={products.map((p: any) => ({
                 value: p.id,
@@ -226,24 +266,41 @@ export default function WarehousePage() {
           </Form.Item>
           <Row gutter={12}>
             <Col span={12}>
-              <Form.Item name="quantity" label="Miqdor" rules={[{ required: true, message: 'Miqdor kiriting' }]}>
+              <Form.Item
+                name="quantity"
+                label="Miqdor"
+                rules={[{ required: true, message: 'Miqdor kiriting' }]}
+              >
                 <InputNumber style={{ width: '100%' }} min={1} placeholder="0" />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item name="costPrice" label="Tannarxi" rules={[{ required: true, message: 'Tannarx kiriting' }]}>
+              <Form.Item
+                name="costPrice"
+                label="Tannarxi"
+                rules={[{ required: true, message: 'Tannarx kiriting' }]}
+              >
                 <InputNumber style={{ width: '100%' }} min={0} placeholder="0" />
               </Form.Item>
             </Col>
           </Row>
           <Row gutter={12}>
             <Col span={12}>
-              <Form.Item name="margin" label="Marja (%)" rules={[{ required: true, message: 'Marja kiriting' }]}>
+              <Form.Item
+                name="margin"
+                label="Marja (%)"
+                rules={[{ required: true, message: 'Marja kiriting' }]}
+              >
                 <InputNumber style={{ width: '100%' }} min={0} max={100} placeholder="0" />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item name="syncProductPrice" label="Narxni yangilash" valuePropName="checked" initialValue={false}>
+              <Form.Item
+                name="syncProductPrice"
+                label="Narxni yangilash"
+                valuePropName="checked"
+                initialValue={false}
+              >
                 <Switch />
               </Form.Item>
             </Col>
@@ -259,15 +316,21 @@ export default function WarehousePage() {
         title="Zahirani sozlash"
         open={!!adjustModal}
         onCancel={() => setAdjustModal(null)}
-        onOk={() => adjustForm.validateFields().then((v) => adjustMutation.mutate(v))}
+        onOk={() => adjustForm.validateFields().then(v => adjustMutation.mutate(v))}
         okText="Saqlash"
         cancelText="Bekor qilish"
         confirmLoading={adjustMutation.isPending}
         okButtonProps={{ style: { background: '#6366f1', border: 'none' } }}
       >
         <Form form={adjustForm} layout="vertical" style={{ marginTop: 16 }}>
-          <Form.Item name="productId" hidden><Input /></Form.Item>
-          <Form.Item name="quantity" label="Yangi miqdor" rules={[{ required: true, message: 'Miqdor kiriting' }]}>
+          <Form.Item name="productId" hidden>
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="quantity"
+            label="Yangi miqdor"
+            rules={[{ required: true, message: 'Miqdor kiriting' }]}
+          >
             <InputNumber style={{ width: '100%' }} min={0} placeholder="0" />
           </Form.Item>
           <Form.Item name="notes" label="Izoh">

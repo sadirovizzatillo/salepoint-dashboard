@@ -57,9 +57,7 @@ export default function CustomerDebtsPage() {
       title: 'Qoldiq',
       dataIndex: 'remainingAmount',
       render: (v: number) => (
-        <Text style={{ fontSize: 12, color: '#ef4444', fontWeight: 600 }}>
-          {formatCurrency(v)}
-        </Text>
+        <Text style={{ fontSize: 12, color: '#ef4444', fontWeight: 600 }}>{formatCurrency(v)}</Text>
       ),
     },
     {
@@ -67,15 +65,17 @@ export default function CustomerDebtsPage() {
       dataIndex: 'status',
       render: (v: string) => {
         const s = statusLabel[v] ?? { text: v, color: 'default' }
-        return <Tag color={s.color} style={{ fontSize: 11 }}>{s.text}</Tag>
+        return (
+          <Tag color={s.color} style={{ fontSize: 11 }}>
+            {s.text}
+          </Tag>
+        )
       },
     },
     {
       title: 'Izoh',
       dataIndex: 'description',
-      render: (v: string) => (
-        <Text style={{ fontSize: 12, color: '#94a3b8' }}>{v || '—'}</Text>
-      ),
+      render: (v: string) => <Text style={{ fontSize: 12, color: '#94a3b8' }}>{v || '—'}</Text>,
     },
   ]
 

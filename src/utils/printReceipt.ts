@@ -1,13 +1,18 @@
 import { Order } from '@/types/order.types'
 
 const escapeHtml = (s: string): string =>
-  String(s ?? '').replace(/[&<>"']/g, (c) => {
+  String(s ?? '').replace(/[&<>"']/g, c => {
     switch (c) {
-      case '&': return '&amp;'
-      case '<': return '&lt;'
-      case '>': return '&gt;'
-      case '"': return '&quot;'
-      default:  return '&#39;'
+      case '&':
+        return '&amp;'
+      case '<':
+        return '&lt;'
+      case '>':
+        return '&gt;'
+      case '"':
+        return '&quot;'
+      default:
+        return '&#39;'
     }
   })
 
@@ -27,7 +32,7 @@ export function printReceipt(order: Order, shopName: string): void {
   if (!w) return
 
   const itemsHtml = order.items
-    .map((i) => {
+    .map(i => {
       const qty = i.quantity
       const unit = Number(i.price)
       const line = Number(i.lineTotal ?? unit * qty)

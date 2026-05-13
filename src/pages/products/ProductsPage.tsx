@@ -1,14 +1,37 @@
 import { useState } from 'react'
 import {
-  Table, Button, Input, Select, Space, Tag, Modal, Form,
-  InputNumber, Switch, Popconfirm, Tooltip, Row, Col, Empty, Image,
+  Table,
+  Button,
+  Input,
+  Select,
+  Space,
+  Tag,
+  Modal,
+  Form,
+  InputNumber,
+  Switch,
+  Popconfirm,
+  Tooltip,
+  Row,
+  Col,
+  Empty,
+  Image,
 } from 'antd'
 import {
-  PlusOutlined, SearchOutlined, EditOutlined,
-  DeleteOutlined, BarcodeOutlined, ReloadOutlined, PictureOutlined, EyeOutlined,
+  PlusOutlined,
+  SearchOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  BarcodeOutlined,
+  ReloadOutlined,
+  PictureOutlined,
+  EyeOutlined,
 } from '@ant-design/icons'
 import {
-  useProducts, useCreateProduct, useUpdateProduct, useDeleteProduct,
+  useProducts,
+  useCreateProduct,
+  useUpdateProduct,
+  useDeleteProduct,
 } from '@/hooks/useProducts'
 import { useCategories } from '@/hooks/useCategories'
 import PageHeader from '@/components/common/PageHeader'
@@ -108,7 +131,9 @@ export default function ProductsPage() {
       dataIndex: 'sku',
       key: 'sku',
       width: 100,
-      render: (v: string) => <span style={{ fontSize: 12, color: '#94a3b8', fontFamily: 'monospace' }}>{v}</span>,
+      render: (v: string) => (
+        <span style={{ fontSize: 12, color: '#94a3b8', fontFamily: 'monospace' }}>{v}</span>
+      ),
     },
     {
       title: 'Mahsulot nomi',
@@ -118,7 +143,15 @@ export default function ProductsPage() {
         <div>
           <div style={{ fontWeight: 500, fontSize: 13 }}>{v}</div>
           {r.barcode && (
-            <div style={{ fontSize: 11, color: '#94a3b8', display: 'flex', alignItems: 'center', gap: 4 }}>
+            <div
+              style={{
+                fontSize: 11,
+                color: '#94a3b8',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 4,
+              }}
+            >
               <BarcodeOutlined style={{ fontSize: 10 }} /> {r.barcode}
             </div>
           )}
@@ -131,9 +164,7 @@ export default function ProductsPage() {
       key: 'price',
       align: 'center' as const,
       render: (v: number) => (
-        <span style={{ fontWeight: 500, fontSize: 13, color: '#0f172a' }}>
-          {formatCurrency(v)}
-        </span>
+        <span style={{ fontWeight: 500, fontSize: 13, color: '#0f172a' }}>{formatCurrency(v)}</span>
       ),
     },
     {
@@ -149,21 +180,18 @@ export default function ProductsPage() {
       title: 'Kategoriya',
       dataIndex: ['category', 'name'],
       key: 'categoryName',
-        align: 'center' as const,
-      render: (v: string) =>
-        v ? <Tag style={{ fontSize: 11, borderRadius: 20 }}>{v}</Tag> : '—',
+      align: 'center' as const,
+      render: (v: string) => (v ? <Tag style={{ fontSize: 11, borderRadius: 20 }}>{v}</Tag> : '—'),
     },
     {
       title: "O'lchov miqdori",
       dataIndex: 'unitType',
       key: 'unitType',
       width: 130,
-        align: 'center' as const,
+      align: 'center' as const,
       render: (v: Product['unitType']) => {
         const label =
-          v === 'meter' ? 'Metr' :
-          v === 'kilogram' ? 'Kilogramm' :
-          v === 'piece' ? 'Dona' : '—'
+          v === 'meter' ? 'Metr' : v === 'kilogram' ? 'Kilogramm' : v === 'piece' ? 'Dona' : '—'
         return <span style={{ fontSize: 12, color: '#64748b' }}>{label}</span>
       },
     },
@@ -253,27 +281,27 @@ export default function ProductsPage() {
           prefix={<SearchOutlined style={{ color: '#94a3b8' }} />}
           placeholder="Mahsulot nomi yoki shtrix-kod..."
           style={{ width: 260, borderRadius: 8 }}
-          onChange={(e) =>
-            setFilters((f) => ({ ...f, search: e.target.value, page: 1 }))
-          }
+          onChange={e => setFilters(f => ({ ...f, search: e.target.value, page: 1 }))}
           allowClear
         />
         <Select
           placeholder="Kategoriya"
           style={{ width: 180, borderRadius: 8 }}
           allowClear
-          onChange={(v) => setFilters((f) => ({ ...f, categoryId: v, page: 1 }))}
+          onChange={v => setFilters(f => ({ ...f, categoryId: v, page: 1 }))}
         >
-          {categories?.map((c) => (
-            <Option key={c.id} value={c.id}>{c.name}</Option>
+          {categories?.map(c => (
+            <Option key={c.id} value={c.id}>
+              {c.name}
+            </Option>
           ))}
         </Select>
         <Select
           placeholder="Holat"
           style={{ width: 130 }}
           allowClear
-          onChange={(v) =>
-            setFilters((f) => ({ ...f, active: v === undefined ? undefined : v === 'true', page: 1 }))
+          onChange={v =>
+            setFilters(f => ({ ...f, active: v === undefined ? undefined : v === 'true', page: 1 }))
           }
         >
           <Option value="true">Faol</Option>
@@ -300,8 +328,8 @@ export default function ProductsPage() {
             pageSize: filters.limit,
             total: data?.total,
             showSizeChanger: true,
-            showTotal: (t) => `Jami ${t} ta`,
-            onChange: (page, limit) => setFilters((f) => ({ ...f, page, limit })),
+            showTotal: t => `Jami ${t} ta`,
+            onChange: (page, limit) => setFilters(f => ({ ...f, page, limit })),
             style: { padding: '12px 16px' },
           }}
           size="middle"
@@ -323,20 +351,25 @@ export default function ProductsPage() {
         <Form form={form} layout="vertical" style={{ marginTop: 16 }}>
           <div style={{ marginBottom: 16 }}>
             <div style={{ fontSize: 13, color: '#475569', marginBottom: 8 }}>Rasm</div>
-            <ProductImageUploader
-              productId={editing?.id ?? null}
-              imageUrl={editing?.imageUrl}
-            />
+            <ProductImageUploader productId={editing?.id ?? null} imageUrl={editing?.imageUrl} />
           </div>
 
           <Row gutter={12}>
             <Col span={14}>
-              <Form.Item name="name" label="Mahsulot nomi" rules={[{ required: true, message: 'Nom kiriting' }]}>
+              <Form.Item
+                name="name"
+                label="Mahsulot nomi"
+                rules={[{ required: true, message: 'Nom kiriting' }]}
+              >
                 <Input placeholder="Espresso" />
               </Form.Item>
             </Col>
             <Col span={10}>
-              <Form.Item name="sku" label="SKU" rules={[{ required: true, message: 'SKU kiriting' }]}>
+              <Form.Item
+                name="sku"
+                label="SKU"
+                rules={[{ required: true, message: 'SKU kiriting' }]}
+              >
                 <Input placeholder="ESP-001" />
               </Form.Item>
             </Col>
@@ -351,8 +384,10 @@ export default function ProductsPage() {
             <Col span={12}>
               <Form.Item name="categoryId" label="Kategoriya">
                 <Select placeholder="Tanlang" allowClear>
-                  {categories?.map((c) => (
-                    <Option key={c.id} value={c.id}>{c.name}</Option>
+                  {categories?.map(c => (
+                    <Option key={c.id} value={c.id}>
+                      {c.name}
+                    </Option>
                   ))}
                 </Select>
               </Form.Item>

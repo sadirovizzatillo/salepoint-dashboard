@@ -1,0 +1,10 @@
+node_modules
+dist
+dist-ssr
+build
+coverage
+.vite
+.idea
+.vscode
+pnpm-lock.yaml
+*.tsbuildinfo

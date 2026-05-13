@@ -1,8 +1,5 @@
 import { useState } from 'react'
-import {
-  Table, Button, Modal, Form, Input, Space, Typography,
-  Tooltip, Tag, Empty,
-} from 'antd'
+import { Table, Button, Modal, Form, Input, Space, Typography, Tooltip, Tag, Empty } from 'antd'
 import { PlusOutlined, EditOutlined, ReloadOutlined } from '@ant-design/icons'
 import { useShops, useCreateShop, useUpdateShop } from '@/hooks/useShops'
 import PageHeader from '@/components/common/PageHeader'
@@ -86,17 +83,13 @@ export default function ShopsPage() {
       title: 'Manzil',
       dataIndex: 'address',
       key: 'address',
-      render: (v: string) => (
-        <Text style={{ fontSize: 13, color: '#334155' }}>{v || '—'}</Text>
-      ),
+      render: (v: string) => <Text style={{ fontSize: 13, color: '#334155' }}>{v || '—'}</Text>,
     },
     {
       title: 'Telefon',
       dataIndex: 'phone',
       key: 'phone',
-      render: (v: string) => (
-        <Text style={{ fontSize: 13, color: '#334155' }}>{v || '—'}</Text>
-      ),
+      render: (v: string) => <Text style={{ fontSize: 13, color: '#334155' }}>{v || '—'}</Text>,
     },
     {
       title: 'Holat',
@@ -188,11 +181,7 @@ export default function ShopsPage() {
         okButtonProps={{ style: { background: '#6366f1', border: 'none' } }}
       >
         <Form form={form} layout="vertical" style={{ marginTop: 16 }}>
-          <Form.Item
-            name="name"
-            label="Nomi"
-            rules={[{ required: true, message: 'Nom kiriting' }]}
-          >
+          <Form.Item name="name" label="Nomi" rules={[{ required: true, message: 'Nom kiriting' }]}>
             <Input placeholder="Mening do'konim" />
           </Form.Item>
           <Form.Item name="address" label="Manzil">

@@ -64,7 +64,7 @@ export default function SalesTrendChart({ data }: SalesTrendChartProps) {
         <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
         <XAxis
           dataKey="period"
-          tickFormatter={(d) => dayjs(d).format('DD MMM')}
+          tickFormatter={d => dayjs(d).format('DD MMM')}
           tick={{ fontSize: 11, fill: '#94a3b8' }}
           axisLine={false}
           tickLine={false}
@@ -75,7 +75,7 @@ export default function SalesTrendChart({ data }: SalesTrendChartProps) {
           tick={{ fontSize: 11, fill: '#94a3b8' }}
           axisLine={false}
           tickLine={false}
-          tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`}
+          tickFormatter={v => `${(v / 1000).toFixed(0)}k`}
           width={44}
         />
         <YAxis
@@ -90,7 +90,7 @@ export default function SalesTrendChart({ data }: SalesTrendChartProps) {
         <Tooltip content={<CustomTooltip />} />
         <Legend
           wrapperStyle={{ fontSize: 12, paddingTop: 12 }}
-          formatter={(v) => v === 'revenue' ? 'Tushum' : 'Buyurtmalar'}
+          formatter={v => (v === 'revenue' ? 'Tushum' : 'Buyurtmalar')}
         />
         <Area
           yAxisId="revenue"

@@ -55,11 +55,9 @@ const navItems = [
   },
   {
     key: 'reports',
-    label: "Hisobotlar",
+    label: 'Hisobotlar',
     type: 'group' as const,
-    children: [
-      { key: '/reports', icon: <BarChartOutlined />, label: 'Hisobot' },
-    ],
+    children: [{ key: '/reports', icon: <BarChartOutlined />, label: 'Hisobot' }],
   },
 ]
 
@@ -113,9 +111,7 @@ export default function Sidebar() {
           Z
         </div>
         {!sidebarCollapsed && (
-          <span style={{ color: '#f1f5f9', fontWeight: 600, fontSize: 16 }}>
-            ZPos.
-          </span>
+          <span style={{ color: '#f1f5f9', fontWeight: 600, fontSize: 16 }}>ZPos.</span>
         )}
       </div>
 
@@ -131,7 +127,6 @@ export default function Sidebar() {
           marginTop: 8,
         }}
       />
-
     </Sider>
   )
 }

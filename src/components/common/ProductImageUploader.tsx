@@ -1,7 +1,10 @@
 import { useRef } from 'react'
 import { Button, Spin, Tooltip, message } from 'antd'
 import {
-  CloudUploadOutlined, DeleteOutlined, PictureOutlined, SwapOutlined,
+  CloudUploadOutlined,
+  DeleteOutlined,
+  PictureOutlined,
+  SwapOutlined,
 } from '@ant-design/icons'
 import { useUploadProductImage, useRemoveProductImage } from '@/hooks/useProductImage'
 import { ALLOWED_IMAGE_MIMES, MAX_IMAGE_BYTES } from '@/types/product.types'

@@ -12,9 +12,9 @@ export default function CategoriesPage() {
   const { data: categories, isLoading, isFetching, refetch } = useCategories()
   const createMutation = useCreateCategory()
 
-    const handleCardClick = (item: Category) => {
-        console.log(item)
-    }
+  const handleCardClick = (item: Category) => {
+    console.log(item)
+  }
 
   const handleSubmit = async () => {
     const values = await form.validateFields()
@@ -56,7 +56,7 @@ export default function CategoriesPage() {
         <Empty description="Kategoriyalar topilmadi" style={{ padding: '60px 0' }} />
       ) : (
         <Row gutter={[16, 16]}>
-          {categories?.map((cat) => (
+          {categories?.map(cat => (
             <Col key={cat.id} xs={12} sm={8} md={6} lg={4} onClick={() => handleCardClick(cat)}>
               <Card
                 hoverable
@@ -106,7 +106,10 @@ export default function CategoriesPage() {
       <Modal
         title="Kategoriya qo'shish"
         open={modalOpen}
-        onCancel={() => { setModalOpen(false); form.resetFields() }}
+        onCancel={() => {
+          setModalOpen(false)
+          form.resetFields()
+        }}
         onOk={handleSubmit}
         okText="Qo'shish"
         cancelText="Bekor qilish"

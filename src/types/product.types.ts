@@ -47,11 +47,7 @@ export interface ProductFilters {
 
 export type AllowedImageMime = 'image/jpeg' | 'image/png' | 'image/webp'
 
-export const ALLOWED_IMAGE_MIMES: AllowedImageMime[] = [
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-]
+export const ALLOWED_IMAGE_MIMES: AllowedImageMime[] = ['image/jpeg', 'image/png', 'image/webp']
 
 export const MAX_IMAGE_BYTES = 5 * 1024 * 1024
 

@@ -21,15 +21,14 @@ interface AuthState {
   switchShop: (shopId: string) => Promise<void>
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>(set => ({
   preAuthToken: null,
   shops: [],
   accessToken: null,
   refreshToken: null,
   isAuthenticated: false,
 
-  setPreAuth: (token, shops) =>
-    set({ preAuthToken: token, shops }),
+  setPreAuth: (token, shops) => set({ preAuthToken: token, shops }),
 
   setTokens: (accessToken, refreshToken) => {
     localStorage.setItem('accessToken', accessToken)
@@ -43,8 +42,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     })
   },
 
-  clearPreAuth: () =>
-    set({ preAuthToken: null, shops: [] }),
+  clearPreAuth: () => set({ preAuthToken: null, shops: [] }),
 
   logout: () => {
     localStorage.removeItem('accessToken')

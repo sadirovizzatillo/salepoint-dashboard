@@ -21,8 +21,8 @@ import ShiftsPage from '@/pages/shifts/ShiftsPage'
 import SmsLogsPage from '@/pages/sms/SmsLogsPage'
 
 const ProtectedRoute = () => {
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
-  const logout = useAuthStore((s) => s.logout)
+  const isAuthenticated = useAuthStore(s => s.isAuthenticated)
+  const logout = useAuthStore(s => s.logout)
   const { data, isPending, isError } = useMe()
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const ProtectedRoute = () => {
 }
 
 const PublicRoute = () => {
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
+  const isAuthenticated = useAuthStore(s => s.isAuthenticated)
   return isAuthenticated ? <Navigate to="/" replace /> : <Outlet />
 }
 

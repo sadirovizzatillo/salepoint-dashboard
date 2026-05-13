@@ -23,8 +23,7 @@ export const useDebts = (params: { page?: number; limit?: number; customerId?: s
 export const useRepayDebt = () => {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: ({ id, body }: { id: string; body: RepayDebtRequest }) =>
-      debtsApi.repay(id, body),
+    mutationFn: ({ id, body }: { id: string; body: RepayDebtRequest }) => debtsApi.repay(id, body),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [DEBTS_KEY] })
       qc.invalidateQueries({ queryKey: [DEBTS_SUMMARY_KEY] })

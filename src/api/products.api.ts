@@ -43,7 +43,7 @@ export const productsApi = {
 
   getImageUploadUrl: async (
     id: string,
-    body: ImageUploadUrlRequest,
+    body: ImageUploadUrlRequest
   ): Promise<ImageUploadUrlResponse> => {
     const { data } = await client.post(`/products/${id}/image/upload-url`, body)
     return data
@@ -52,7 +52,7 @@ export const productsApi = {
   putToSpaces: async (uploadUrl: string, file: File | Blob): Promise<void> => {
     await axios.put(uploadUrl, file, {
       headers: { 'Content-Type': file.type, 'x-amz-acl': 'public-read' },
-      transformRequest: [(d) => d],
+      transformRequest: [d => d],
     })
   },
 

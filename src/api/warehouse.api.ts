@@ -1,9 +1,17 @@
 import { client } from './client'
-import { WarehouseItem, StockLevel, StockMovement, AddStorageRequest, AdjustStockRequest } from '@/types/warehouse.types'
+import {
+  WarehouseItem,
+  StockLevel,
+  StockMovement,
+  AddStorageRequest,
+  AdjustStockRequest,
+} from '@/types/warehouse.types'
 import { PaginatedResponse } from '@/types/common.types'
 
 export const warehouseApi = {
-  getWarehouse: async (params: { page?: number; limit?: number } = {}): Promise<PaginatedResponse<WarehouseItem>> => {
+  getWarehouse: async (
+    params: { page?: number; limit?: number } = {}
+  ): Promise<PaginatedResponse<WarehouseItem>> => {
     const { data } = await client.get('/inventory/warehouse', { params })
     return data
   },
@@ -13,7 +21,10 @@ export const warehouseApi = {
     return data
   },
 
-  getStorageBatches: async (productId: string, params: { page?: number; limit?: number } = {}): Promise<PaginatedResponse<any>> => {
+  getStorageBatches: async (
+    productId: string,
+    params: { page?: number; limit?: number } = {}
+  ): Promise<PaginatedResponse<any>> => {
     const { data } = await client.get(`/inventory/storage/${productId}`, { params })
     return data
   },
@@ -28,7 +39,10 @@ export const warehouseApi = {
     return data
   },
 
-  getMovements: async (productId: string, params: { page?: number; limit?: number } = {}): Promise<PaginatedResponse<StockMovement>> => {
+  getMovements: async (
+    productId: string,
+    params: { page?: number; limit?: number } = {}
+  ): Promise<PaginatedResponse<StockMovement>> => {
     const { data } = await client.get(`/inventory/${productId}/movements`, { params })
     return data
   },

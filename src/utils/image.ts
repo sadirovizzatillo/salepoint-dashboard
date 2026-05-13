@@ -21,8 +21,14 @@ const loadImage = (file: File): Promise<HTMLImageElement> =>
   new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file)
     const img = new Image()
-    img.onload = () => { URL.revokeObjectURL(url); resolve(img) }
-    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Faylni ochib bo\'lmadi')) }
+    img.onload = () => {
+      URL.revokeObjectURL(url)
+      resolve(img)
+    }
+    img.onerror = () => {
+      URL.revokeObjectURL(url)
+      reject(new Error("Faylni ochib bo'lmadi"))
+    }
     img.src = url
   })
 
@@ -45,15 +51,11 @@ export async function compressImage(file: File): Promise<File> {
 
   const targetMime: AllowedImageMime = file.type === 'image/png' ? 'image/png' : 'image/jpeg'
   let quality = 0.9
-  let blob = await new Promise<Blob | null>((resolve) =>
-    canvas.toBlob(resolve, targetMime, quality),
-  )
+  let blob = await new Promise<Blob | null>(resolve => canvas.toBlob(resolve, targetMime, quality))
 
   while (blob && blob.size > MAX_IMAGE_BYTES && quality > 0.5) {
     quality -= 0.1
-    blob = await new Promise<Blob | null>((resolve) =>
-      canvas.toBlob(resolve, targetMime, quality),
-    )
+    blob = await new Promise<Blob | null>(resolve => canvas.toBlob(resolve, targetMime, quality))
   }
 
   if (!blob) return file

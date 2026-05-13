@@ -4,15 +4,15 @@ Shop owner dashboard built with React + Ant Design + Vite + TypeScript.
 
 ## Stack
 
-| Layer        | Library                     |
-|--------------|-----------------------------|
-| UI           | Ant Design 5                |
-| Routing      | React Router v6             |
-| State        | Zustand                     |
-| Server state | TanStack React Query v5     |
-| HTTP         | Axios (with auto-refresh)   |
-| Charts       | Recharts                    |
-| Build        | Vite + TypeScript           |
+| Layer        | Library                   |
+| ------------ | ------------------------- |
+| UI           | Ant Design 5              |
+| Routing      | React Router v6           |
+| State        | Zustand                   |
+| Server state | TanStack React Query v5   |
+| HTTP         | Axios (with auto-refresh) |
+| Charts       | Recharts                  |
+| Build        | Vite + TypeScript         |
 
 ## Setup
 
@@ -39,15 +39,15 @@ npm run dev
 
 ## Pages
 
-| Route          | Page            |
-|----------------|-----------------|
-| `/login`       | Login (Step 1)  |
+| Route          | Page                 |
+| -------------- | -------------------- |
+| `/login`       | Login (Step 1)       |
 | `/select-shop` | Shop picker (Step 2) |
-| `/`            | Dashboard       |
-| `/products`    | Products        |
-| `/categories`  | Categories      |
-| `/customers`   | Customers       |
-| `/orders`      | Orders          |
+| `/`            | Dashboard            |
+| `/products`    | Products             |
+| `/categories`  | Categories           |
+| `/customers`   | Customers            |
+| `/orders`      | Orders               |
 
 ## Project Structure
 

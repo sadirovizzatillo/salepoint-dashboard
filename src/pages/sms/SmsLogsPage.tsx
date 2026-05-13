@@ -1,7 +1,5 @@
 import { useMemo, useState, ReactNode } from 'react'
-import {
-  Table, Typography, Tag, Empty, Button, Select, DatePicker, Tooltip, Modal,
-} from 'antd'
+import { Table, Typography, Tag, Empty, Button, Select, DatePicker, Tooltip, Modal } from 'antd'
 import {
   ReloadOutlined,
   MessageOutlined,
@@ -24,10 +22,10 @@ const { Text, Paragraph } = Typography
 const { RangePicker } = DatePicker
 
 const STATUS_META: Record<SmsStatus, { color: string; label: string; icon: ReactNode }> = {
-  pending:   { color: 'gold',   label: 'Kutilmoqda',   icon: <ClockCircleOutlined /> },
-  sent:      { color: 'blue',   label: 'Yuborildi',    icon: <SendOutlined /> },
-  delivered: { color: 'green',  label: 'Yetkazildi',   icon: <CheckCircleOutlined /> },
-  failed:    { color: 'red',    label: 'Xato',         icon: <CloseCircleOutlined /> },
+  pending: { color: 'gold', label: 'Kutilmoqda', icon: <ClockCircleOutlined /> },
+  sent: { color: 'blue', label: 'Yuborildi', icon: <SendOutlined /> },
+  delivered: { color: 'green', label: 'Yetkazildi', icon: <CheckCircleOutlined /> },
+  failed: { color: 'red', label: 'Xato', icon: <CloseCircleOutlined /> },
 }
 
 interface StatCardProps {
@@ -54,7 +52,15 @@ function StatCard({ label, value, color, active, onClick }: StatCardProps) {
         boxShadow: active ? `0 0 0 3px ${color}20` : 'none',
       }}
     >
-      <div style={{ fontSize: 11, fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+      <div
+        style={{
+          fontSize: 11,
+          fontWeight: 600,
+          color: '#64748b',
+          textTransform: 'uppercase',
+          letterSpacing: '0.04em',
+        }}
+      >
         {label}
       </div>
       <div style={{ fontSize: 22, fontWeight: 700, color, marginTop: 4 }}>
@@ -100,7 +106,7 @@ export default function SmsLogsPage() {
 
   const userNameById = useMemo(() => {
     const map = new Map<string, string>()
-    staffList.forEach((m) => map.set(m.userId, m.user?.name ?? m.user?.email ?? '—'))
+    staffList.forEach(m => map.set(m.userId, m.user?.name ?? m.user?.email ?? '—'))
     return map
   }, [staffList])
 
@@ -112,7 +118,7 @@ export default function SmsLogsPage() {
   }
 
   const onStatusCardClick = (s: SmsStatus | undefined) => {
-    setStatus((prev) => (prev === s ? undefined : s))
+    setStatus(prev => (prev === s ? undefined : s))
     setPage(1)
   }
 
@@ -215,7 +221,7 @@ export default function SmsLogsPage() {
         subtitle={
           totals
             ? `Jami: ${totals.all.toLocaleString('uz-UZ')} ta SMS`
-            : "Yuborilgan SMS xabarlar tarixi"
+            : 'Yuborilgan SMS xabarlar tarixi'
         }
         extra={
           <Button
@@ -283,12 +289,15 @@ export default function SmsLogsPage() {
         {canPickUser && (
           <Select
             value={userId}
-            onChange={(v) => { setUserId(v); setPage(1) }}
+            onChange={v => {
+              setUserId(v)
+              setPage(1)
+            }}
             style={{ minWidth: 200 }}
             placeholder="Xodim"
             options={[
               { value: 'all', label: 'Barcha xodimlar' },
-              ...staffList.map((m) => ({
+              ...staffList.map(m => ({
                 value: m.userId,
                 label: m.user?.name ?? m.user?.email ?? m.userId,
               })),
@@ -297,18 +306,24 @@ export default function SmsLogsPage() {
         )}
         <Select
           value={status}
-          onChange={(v) => { setStatus(v); setPage(1) }}
+          onChange={v => {
+            setStatus(v)
+            setPage(1)
+          }}
           style={{ minWidth: 160 }}
           placeholder="Holat"
           allowClear
-          options={(Object.keys(STATUS_META) as SmsStatus[]).map((s) => ({
+          options={(Object.keys(STATUS_META) as SmsStatus[]).map(s => ({
             value: s,
             label: STATUS_META[s].label,
           }))}
         />
         <RangePicker
           value={range as [Dayjs, Dayjs] | null}
-          onChange={(v) => { setRange(v as [Dayjs | null, Dayjs | null] | null); setPage(1) }}
+          onChange={v => {
+            setRange(v as [Dayjs | null, Dayjs | null] | null)
+            setPage(1)
+          }}
           showTime={{ format: 'HH:mm' }}
           format="DD.MM.YYYY HH:mm"
           placeholder={['Boshlanish', 'Tugash']}
@@ -337,7 +352,7 @@ export default function SmsLogsPage() {
             total: meta?.total ?? 0,
             showSizeChanger: true,
             pageSizeOptions: ['10', '20', '50', '100'],
-            showTotal: (t) => `Jami ${t} ta`,
+            showTotal: t => `Jami ${t} ta`,
             onChange: (p, ps) => {
               setPage(p)
               if (ps !== limit) setLimit(ps)
@@ -364,29 +379,54 @@ export default function SmsLogsPage() {
       >
         {preview && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <DetailRow label="Holat" value={
-              <Tag
-                color={STATUS_META[preview.status].color}
-                icon={STATUS_META[preview.status].icon}
-                style={{ fontWeight: 600 }}
-              >
-                {STATUS_META[preview.status].label}
-              </Tag>
-            } />
+            <DetailRow
+              label="Holat"
+              value={
+                <Tag
+                  color={STATUS_META[preview.status].color}
+                  icon={STATUS_META[preview.status].icon}
+                  style={{ fontWeight: 600 }}
+                >
+                  {STATUS_META[preview.status].label}
+                </Tag>
+              }
+            />
             <DetailRow label="Telefon" value={formatPhone(preview.phone)} />
             <DetailRow label="Yaratildi" value={formatDateTime(preview.createdAt)} />
-            {preview.sentAt && <DetailRow label="Yuborildi" value={formatDateTime(preview.sentAt)} />}
-            {preview.deliveredAt && <DetailRow label="Yetkazildi" value={formatDateTime(preview.deliveredAt)} />}
-            {preview.failedAt && <DetailRow label="Xato vaqti" value={formatDateTime(preview.failedAt)} />}
-            <DetailRow label="Provayder" value={`${preview.provider}${preview.providerSmsId ? ` · #${preview.providerSmsId}` : ''}`} />
+            {preview.sentAt && (
+              <DetailRow label="Yuborildi" value={formatDateTime(preview.sentAt)} />
+            )}
+            {preview.deliveredAt && (
+              <DetailRow label="Yetkazildi" value={formatDateTime(preview.deliveredAt)} />
+            )}
+            {preview.failedAt && (
+              <DetailRow label="Xato vaqti" value={formatDateTime(preview.failedAt)} />
+            )}
+            <DetailRow
+              label="Provayder"
+              value={`${preview.provider}${preview.providerSmsId ? ` · #${preview.providerSmsId}` : ''}`}
+            />
             <DetailRow label="Urinish" value={String(preview.attempts)} />
             {preview.errorMessage && (
-              <DetailRow label="Xato matni" value={
-                <Text type="danger" style={{ fontSize: 12 }}>{preview.errorMessage}</Text>
-              } />
+              <DetailRow
+                label="Xato matni"
+                value={
+                  <Text type="danger" style={{ fontSize: 12 }}>
+                    {preview.errorMessage}
+                  </Text>
+                }
+              />
             )}
             <div>
-              <div style={{ fontSize: 11, fontWeight: 600, color: '#64748b', textTransform: 'uppercase', marginBottom: 6 }}>
+              <div
+                style={{
+                  fontSize: 11,
+                  fontWeight: 600,
+                  color: '#64748b',
+                  textTransform: 'uppercase',
+                  marginBottom: 6,
+                }}
+              >
                 Matn
               </div>
               <div
@@ -400,7 +440,9 @@ export default function SmsLogsPage() {
                   lineHeight: 1.6,
                 }}
               >
-                <Paragraph style={{ margin: 0, whiteSpace: 'pre-wrap' }}>{preview.message}</Paragraph>
+                <Paragraph style={{ margin: 0, whiteSpace: 'pre-wrap' }}>
+                  {preview.message}
+                </Paragraph>
               </div>
             </div>
           </div>
@@ -412,9 +454,13 @@ export default function SmsLogsPage() {
 
 function DetailRow({ label, value }: { label: string; value: ReactNode }) {
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
+    <div
+      style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}
+    >
       <span style={{ fontSize: 12, color: '#64748b' }}>{label}</span>
-      <span style={{ fontSize: 13, color: '#0f172a', fontWeight: 500, textAlign: 'right' }}>{value}</span>
+      <span style={{ fontSize: 13, color: '#0f172a', fontWeight: 500, textAlign: 'right' }}>
+        {value}
+      </span>
     </div>
   )
 }

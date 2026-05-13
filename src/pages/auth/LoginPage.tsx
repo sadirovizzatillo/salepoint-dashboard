@@ -11,8 +11,8 @@ const { Title, Text } = Typography
 
 export default function LoginPage() {
   const navigate = useNavigate()
-  const setPreAuth = useAuthStore((s) => s.setPreAuth)
-  const setTokens = useAuthStore((s) => s.setTokens)
+  const setPreAuth = useAuthStore(s => s.setPreAuth)
+  const setTokens = useAuthStore(s => s.setTokens)
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -29,15 +29,12 @@ export default function LoginPage() {
         if (!validStatuses.includes(shop.subscriptionStatus)) {
           setError(
             shop.subscriptionStatus === 'expired'
-              ? "Obuna muddati tugagan. Iltimos, obunani yangilang."
+              ? 'Obuna muddati tugagan. Iltimos, obunani yangilang.'
               : "Do'kon to'xtatilgan. Iltimos, qo'llab-quvvatlash bilan bog'laning."
           )
           return
         }
-        const tokens = await authApi.selectShop(
-          { shopId: shop.id },
-          res.preAuthToken
-        )
+        const tokens = await authApi.selectShop({ shopId: shop.id }, res.preAuthToken)
         setTokens(tokens.accessToken, tokens.refreshToken)
         navigate('/')
       } else {
@@ -45,8 +42,7 @@ export default function LoginPage() {
         navigate('/select-shop')
       }
     } catch (err: any) {
-      const msg =
-        err?.response?.data?.message || 'Email yoki parol noto\'g\'ri'
+      const msg = err?.response?.data?.message || "Email yoki parol noto'g'ri"
       setError(msg)
     } finally {
       setLoading(false)
@@ -120,9 +116,7 @@ export default function LoginPage() {
           <Title level={3} style={{ margin: 0, color: '#0f172a', fontWeight: 600 }}>
             Xush kelibsiz
           </Title>
-          <Text style={{ color: '#64748b', fontSize: 14 }}>
-            Davom etish uchun tizimga kiring
-          </Text>
+          <Text style={{ color: '#64748b', fontSize: 14 }}>Davom etish uchun tizimga kiring</Text>
         </div>
 
         {error && (
@@ -136,12 +130,7 @@ export default function LoginPage() {
           />
         )}
 
-        <Form
-          layout="vertical"
-          onFinish={onFinish}
-          requiredMark={false}
-          size="large"
-        >
+        <Form layout="vertical" onFinish={onFinish} requiredMark={false} size="large">
           <Form.Item
             name="email"
             label={<span style={{ color: '#374151', fontWeight: 500, fontSize: 13 }}>Email</span>}

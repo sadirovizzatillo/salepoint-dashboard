@@ -11,7 +11,7 @@ const apiErrorMessage = (err: unknown, fallback: string) => {
   const status = ax.response?.status
   if (status === 403) return "Ruxsat yo'q"
   if (status === 404) return 'Mahsulot yoki fayl topilmadi'
-  if (status === 400) return ax.response?.data?.message || 'Noto\'g\'ri fayl'
+  if (status === 400) return ax.response?.data?.message || "Noto'g'ri fayl"
   return ax.response?.data?.message || fallback
 }
 
@@ -36,8 +36,8 @@ export const useUploadProductImage = () => {
       qc.invalidateQueries({ queryKey: [PRODUCTS_KEY] })
       message.success('Rasm yuklandi')
     },
-    onError: (err) => {
-      message.error(err.message || apiErrorMessage(err, 'Rasm yuklab bo\'lmadi'))
+    onError: err => {
+      message.error(err.message || apiErrorMessage(err, "Rasm yuklab bo'lmadi"))
     },
   })
 }
@@ -45,11 +45,11 @@ export const useUploadProductImage = () => {
 export const useRemoveProductImage = () => {
   const qc = useQueryClient()
   return useMutation<Product, AxiosError, string>({
-    mutationFn: (productId) => productsApi.removeImage(productId),
+    mutationFn: productId => productsApi.removeImage(productId),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [PRODUCTS_KEY] })
       message.success("Rasm o'chirildi")
     },
-    onError: (err) => message.error(apiErrorMessage(err, 'Xatolik yuz berdi')),
+    onError: err => message.error(apiErrorMessage(err, 'Xatolik yuz berdi')),
   })
 }

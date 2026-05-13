@@ -33,9 +33,7 @@ export default function FullScreenLoader({ tip }: { tip?: string }) {
         Z
       </div>
       <Spin />
-      {tip && (
-        <div style={{ fontSize: 13, color: '#64748b' }}>{tip}</div>
-      )}
+      {tip && <div style={{ fontSize: 13, color: '#64748b' }}>{tip}</div>}
     </div>
   )
 }

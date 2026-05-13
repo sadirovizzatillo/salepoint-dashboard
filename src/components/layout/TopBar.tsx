@@ -26,7 +26,7 @@ const statusConfig: Record<string, { label: string; color: string; bg: string; b
   suspended: { label: "To'xtatilgan", color: '#ef4444', bg: '#fef2f2', border: '#fecaca' },
   expired: { label: 'Muddati tugagan', color: '#f59e0b', bg: '#fffbeb', border: '#fde68a' },
 }
-const fallbackStatus = { label: 'Noma\'lum', color: '#64748b', bg: '#f8fafc', border: '#e2e8f0' }
+const fallbackStatus = { label: "Noma'lum", color: '#64748b', bg: '#f8fafc', border: '#e2e8f0' }
 
 export default function TopBar() {
   const navigate = useNavigate()
@@ -100,7 +100,7 @@ export default function TopBar() {
   const initials = me?.name
     ? me.name
         .split(' ')
-        .map((n) => n[0])
+        .map(n => n[0])
         .join('')
         .toUpperCase()
         .slice(0, 2)
@@ -148,7 +148,6 @@ export default function TopBar() {
 
         {/* Right */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-
           {/* Shop badge */}
           <div
             style={{
@@ -199,7 +198,11 @@ export default function TopBar() {
           <div style={{ width: 1, height: 20, background: '#e2e8f0', margin: '0 4px' }} />
 
           {/* User dropdown */}
-          <Dropdown menu={{ items: menuItems }} placement="bottomRight" arrow={{ pointAtCenter: true }}>
+          <Dropdown
+            menu={{ items: menuItems }}
+            placement="bottomRight"
+            arrow={{ pointAtCenter: true }}
+          >
             <div
               style={{
                 display: 'flex',
@@ -211,11 +214,11 @@ export default function TopBar() {
                 border: '1px solid transparent',
                 transition: 'all 0.15s',
               }}
-              onMouseEnter={(e) => {
+              onMouseEnter={e => {
                 e.currentTarget.style.background = '#f8fafc'
                 e.currentTarget.style.borderColor = '#e2e8f0'
               }}
-              onMouseLeave={(e) => {
+              onMouseLeave={e => {
                 e.currentTarget.style.background = 'transparent'
                 e.currentTarget.style.borderColor = 'transparent'
               }}
@@ -271,7 +274,7 @@ export default function TopBar() {
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {shops.map((shop) => {
+            {shops.map(shop => {
               const isActive = shop.subscriptionStatus === 'active'
               const isCurrent = shop.id === currentShopId
               const isLoading = switching === shop.id
@@ -311,14 +314,20 @@ export default function TopBar() {
                     }}
                   >
                     {shop.logoUrl ? (
-                      <img src={shop.logoUrl} alt={shop.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <img
+                        src={shop.logoUrl}
+                        alt={shop.name}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
                     ) : (
                       <ShopOutlined style={{ fontSize: 16, color: '#6366f1' }} />
                     )}
                   </div>
 
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontWeight: 600, fontSize: 13, color: '#0f172a', marginBottom: 2 }}>
+                    <div
+                      style={{ fontWeight: 600, fontSize: 13, color: '#0f172a', marginBottom: 2 }}
+                    >
                       {shop.name}
                     </div>
                     <span

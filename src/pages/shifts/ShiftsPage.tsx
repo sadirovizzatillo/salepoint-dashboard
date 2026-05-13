@@ -24,7 +24,7 @@ function duration(openedAt: string, closedAt: string | null): string {
 export default function ShiftsPage() {
   const { data: shifts = [], isLoading, isFetching, refetch } = useShifts()
 
-  const openCount = shifts.filter((s) => s.status === 'open').length
+  const openCount = shifts.filter(s => s.status === 'open').length
 
   const columns = [
     {
@@ -66,9 +66,15 @@ export default function ShiftsPage() {
       key: 'status',
       render: (v: string) =>
         v === 'open' ? (
-          <Badge status="processing" text={<Text style={{ fontSize: 12, color: '#10b981', fontWeight: 600 }}>Ochiq</Text>} />
+          <Badge
+            status="processing"
+            text={<Text style={{ fontSize: 12, color: '#10b981', fontWeight: 600 }}>Ochiq</Text>}
+          />
         ) : (
-          <Badge status="default" text={<Text style={{ fontSize: 12, color: '#64748b' }}>Yopiq</Text>} />
+          <Badge
+            status="default"
+            text={<Text style={{ fontSize: 12, color: '#64748b' }}>Yopiq</Text>}
+          />
         ),
     },
     {
@@ -104,17 +110,13 @@ export default function ShiftsPage() {
       title: 'Naqd savdo',
       dataIndex: 'cashSales',
       key: 'cashSales',
-      render: (v: number) => (
-        <Text style={{ fontSize: 12 }}>{formatCurrency(v)}</Text>
-      ),
+      render: (v: number) => <Text style={{ fontSize: 12 }}>{formatCurrency(v)}</Text>,
     },
     {
       title: 'Karta savdo',
       dataIndex: 'cardSales',
       key: 'cardSales',
-      render: (v: number) => (
-        <Text style={{ fontSize: 12 }}>{formatCurrency(v)}</Text>
-      ),
+      render: (v: number) => <Text style={{ fontSize: 12 }}>{formatCurrency(v)}</Text>,
     },
     {
       title: 'Jami savdo',
@@ -133,12 +135,10 @@ export default function ShiftsPage() {
       ),
       dataIndex: 'orderCount',
       key: 'orderCount',
-      render: (v: number) => (
-        <Tag style={{ fontWeight: 600, fontSize: 12 }}>{v} ta</Tag>
-      ),
+      render: (v: number) => <Tag style={{ fontWeight: 600, fontSize: 12 }}>{v} ta</Tag>,
     },
     {
-      title: 'Boshlang\'ich kassa',
+      title: "Boshlang'ich kassa",
       dataIndex: 'openingFloat',
       key: 'openingFloat',
       render: (v: number) => (
@@ -198,7 +198,7 @@ export default function ShiftsPage() {
           pagination={false}
           scroll={{ x: 1200 }}
           size="middle"
-          rowClassName={(r) => r.status === 'open' ? 'shift-row-open' : ''}
+          rowClassName={r => (r.status === 'open' ? 'shift-row-open' : '')}
         />
       </div>
     </div>

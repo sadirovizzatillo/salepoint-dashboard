@@ -1,7 +1,5 @@
 import { useState } from 'react'
-import {
-  Table, Input, Typography, Tooltip, Button, Tag, Empty, Modal,
-} from 'antd'
+import { Table, Input, Typography, Tooltip, Button, Tag, Empty, Modal } from 'antd'
 import {
   SearchOutlined,
   PhoneOutlined,
@@ -19,10 +17,19 @@ import { formatDate, formatCurrency, formatPhone } from '@/utils/formatters'
 const { Text } = Typography
 
 function parseJwt(token: string) {
-  try { return JSON.parse(atob(token.split('.')[1])) } catch { return {} }
+  try {
+    return JSON.parse(atob(token.split('.')[1]))
+  } catch {
+    return {}
+  }
 }
 
-function buildSmsText(customerName: string, shopName: string, totalRemaining: number, debtCount: number) {
+function buildSmsText(
+  customerName: string,
+  shopName: string,
+  totalRemaining: number,
+  debtCount: number
+) {
   const amount = formatCurrency(totalRemaining)
   const countPart = debtCount > 1 ? ` (${debtCount} ta qarz)` : ''
   return `Hurmatli ${customerName}, "${shopName}" do'konidan jami ${amount} qarzingiz bor${countPart}. Iltimos, o'z vaqtida to'lang.`
@@ -37,9 +44,21 @@ interface SmsConfirmModalProps {
   loading: boolean
 }
 
-function SmsConfirmModal({ open, customer, shopName, onConfirm, onCancel, loading }: SmsConfirmModalProps) {
+function SmsConfirmModal({
+  open,
+  customer,
+  shopName,
+  onConfirm,
+  onCancel,
+  loading,
+}: SmsConfirmModalProps) {
   if (!customer) return null
-  const smsText = buildSmsText(customer.customerName, shopName, customer.totalRemaining, customer.debtCount)
+  const smsText = buildSmsText(
+    customer.customerName,
+    shopName,
+    customer.totalRemaining,
+    customer.debtCount
+  )
 
   return (
     <Modal
@@ -52,7 +71,15 @@ function SmsConfirmModal({ open, customer, shopName, onConfirm, onCancel, loadin
       maskClosable={!loading}
     >
       {/* Header */}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 8, paddingBottom: 20 }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          paddingTop: 8,
+          paddingBottom: 20,
+        }}
+      >
         <div
           style={{
             width: 56,
@@ -88,7 +115,16 @@ function SmsConfirmModal({ open, customer, shopName, onConfirm, onCancel, loadin
           position: 'relative',
         }}
       >
-        <div style={{ fontSize: 10, fontWeight: 600, color: '#94a3b8', letterSpacing: '0.05em', marginBottom: 8, textTransform: 'uppercase' }}>
+        <div
+          style={{
+            fontSize: 10,
+            fontWeight: 600,
+            color: '#94a3b8',
+            letterSpacing: '0.05em',
+            marginBottom: 8,
+            textTransform: 'uppercase',
+          }}
+        >
           SMS matni
         </div>
         <div
@@ -110,7 +146,10 @@ function SmsConfirmModal({ open, customer, shopName, onConfirm, onCancel, loadin
               Qarz soni: <strong style={{ color: '#ef4444' }}>{customer.debtCount} ta</strong>
             </span>
             <span style={{ fontSize: 11, color: '#94a3b8' }}>
-              Jami: <strong style={{ color: '#ef4444' }}>{formatCurrency(customer.totalRemaining)}</strong>
+              Jami:{' '}
+              <strong style={{ color: '#ef4444' }}>
+                {formatCurrency(customer.totalRemaining)}
+              </strong>
             </span>
           </div>
         </div>
@@ -118,12 +157,7 @@ function SmsConfirmModal({ open, customer, shopName, onConfirm, onCancel, loadin
 
       {/* Actions */}
       <div style={{ display: 'flex', gap: 10 }}>
-        <Button
-          block
-          onClick={onCancel}
-          disabled={loading}
-          style={{ borderRadius: 8 }}
-        >
+        <Button block onClick={onCancel} disabled={loading} style={{ borderRadius: 8 }}>
           Bekor qilish
         </Button>
         <Button
@@ -187,10 +221,14 @@ export default function DebtsPage() {
       key: 'phone',
       render: (v: string) => (
         <Text style={{ fontSize: 13, color: '#334155' }}>
-          {v
-            ? <><PhoneOutlined style={{ marginRight: 4, color: '#94a3b8' }} />{formatPhone(v)}</>
-            : <span style={{ color: '#cbd5e1' }}>—</span>
-          }
+          {v ? (
+            <>
+              <PhoneOutlined style={{ marginRight: 4, color: '#94a3b8' }} />
+              {formatPhone(v)}
+            </>
+          ) : (
+            <span style={{ color: '#cbd5e1' }}>—</span>
+          )}
         </Text>
       ),
     },
@@ -199,7 +237,9 @@ export default function DebtsPage() {
       dataIndex: 'debtCount',
       key: 'debtCount',
       render: (v: number) => (
-        <Tag color="red" style={{ fontWeight: 600 }}>{v} ta</Tag>
+        <Tag color="red" style={{ fontWeight: 600 }}>
+          {v} ta
+        </Tag>
       ),
     },
     {
@@ -278,7 +318,10 @@ export default function DebtsPage() {
           placeholder="Mijoz ismi bo'yicha qidirish..."
           style={{ width: 300, borderRadius: 8 }}
           value={search}
-          onChange={(e) => { setSearch(e.target.value); setPage(1) }}
+          onChange={e => {
+            setSearch(e.target.value)
+            setPage(1)
+          }}
           allowClear
         />
       </div>
@@ -301,7 +344,7 @@ export default function DebtsPage() {
             current: page,
             pageSize: 20,
             total: data?.meta?.total,
-            showTotal: (t) => `Jami ${t} ta`,
+            showTotal: t => `Jami ${t} ta`,
             onChange: setPage,
             style: { padding: '12px 16px' },
           }}

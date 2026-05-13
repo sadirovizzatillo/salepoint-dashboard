@@ -11,7 +11,11 @@ import { printReceipt } from '@/utils/printReceipt'
 import dayjs, { Dayjs } from 'dayjs'
 
 function parseJwt(token: string) {
-  try { return JSON.parse(atob(token.split('.')[1])) } catch { return {} }
+  try {
+    return JSON.parse(atob(token.split('.')[1]))
+  } catch {
+    return {}
+  }
 }
 
 const { RangePicker } = DatePicker
@@ -25,7 +29,7 @@ export default function OrdersPage() {
   const shopName = accessToken ? (parseJwt(accessToken).shopName ?? "Do'kon") : "Do'kon"
 
   const handleRangeChange = (_: any, dates: [string, string]) => {
-    setFilters((f) => ({ ...f, from: dates[0] || undefined, to: dates[1] || undefined, page: 1 }))
+    setFilters(f => ({ ...f, from: dates[0] || undefined, to: dates[1] || undefined, page: 1 }))
   }
 
   const pageOffset = ((filters.page ?? 1) - 1) * (filters.limit ?? 10)
@@ -64,7 +68,9 @@ export default function OrdersPage() {
       dataIndex: 'customerName',
       key: 'customerName',
       render: (v: string) => (
-        <Text style={{ fontSize: 13 }}>{v || <span style={{ color: '#94a3b8' }}>Anonim</span>}</Text>
+        <Text style={{ fontSize: 13 }}>
+          {v || <span style={{ color: '#94a3b8' }}>Anonim</span>}
+        </Text>
       ),
     },
     {
@@ -87,9 +93,7 @@ export default function OrdersPage() {
       key: 'total',
       align: 'right' as const,
       render: (v: number) => (
-        <Text style={{ fontWeight: 600, fontSize: 13, color: '#0f172a' }}>
-          {formatCurrency(v)}
-        </Text>
+        <Text style={{ fontWeight: 600, fontSize: 13, color: '#0f172a' }}>{formatCurrency(v)}</Text>
       ),
     },
     {
@@ -148,7 +152,7 @@ export default function OrdersPage() {
           placeholder="Holat"
           style={{ width: 160 }}
           allowClear
-          onChange={(v) => setFilters((f) => ({ ...f, status: v, page: 1 }))}
+          onChange={v => setFilters(f => ({ ...f, status: v, page: 1 }))}
         >
           <Option value="PENDING">Kutilmoqda</Option>
           <Option value="PAID">To'langan</Option>
@@ -181,8 +185,8 @@ export default function OrdersPage() {
             current: filters.page,
             pageSize: filters.limit,
             total: data?.total,
-            showTotal: (t) => `Jami ${t} ta`,
-            onChange: (page, limit) => setFilters((f) => ({ ...f, page, limit })),
+            showTotal: t => `Jami ${t} ta`,
+            onChange: (page, limit) => setFilters(f => ({ ...f, page, limit })),
             style: { padding: '12px 16px' },
           }}
           size="middle"

@@ -39,9 +39,7 @@ export default function StatCard({
               marginBottom: 10,
             }}
           >
-            <span style={{ fontSize: 12, color: '#94a3b8', fontWeight: 500 }}>
-              {label}
-            </span>
+            <span style={{ fontSize: 12, color: '#94a3b8', fontWeight: 500 }}>{label}</span>
             {icon && (
               <div
                 style={{
@@ -63,11 +61,7 @@ export default function StatCard({
           <div style={{ fontSize: 22, fontWeight: 600, color: '#0f172a', lineHeight: 1.2 }}>
             {value}
           </div>
-          {sub && (
-            <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 6 }}>
-              {sub}
-            </div>
-          )}
+          {sub && <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 6 }}>{sub}</div>}
         </>
       )}
     </Card>

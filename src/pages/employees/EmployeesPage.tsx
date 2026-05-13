@@ -1,7 +1,17 @@
 import { useState } from 'react'
 import {
-  Table, Button, Modal, Form, Input, Select, Space, Typography,
-  Tooltip, Tag, Empty, Popconfirm,
+  Table,
+  Button,
+  Modal,
+  Form,
+  Input,
+  Select,
+  Space,
+  Typography,
+  Tooltip,
+  Tag,
+  Empty,
+  Popconfirm,
 } from 'antd'
 import { PlusOutlined, DeleteOutlined, ReloadOutlined } from '@ant-design/icons'
 import { useStaff, useCreateStaff, useRemoveStaff } from '@/hooks/useStaff'
@@ -71,7 +81,7 @@ export default function EmployeesPage() {
       key: 'roles',
       render: (_: unknown, record: StaffMember) => (
         <Space size={4}>
-          {record.roles.map((role) => (
+          {record.roles.map(role => (
             <Tag key={role} color={ROLE_COLORS[role]} style={{ fontSize: 12 }}>
               {ROLE_LABELS[role] ?? role}
             </Tag>
@@ -83,9 +93,7 @@ export default function EmployeesPage() {
       title: 'Holat',
       dataIndex: 'isActive',
       key: 'isActive',
-      render: (v: boolean) => (
-        <Tag color={v ? 'green' : 'default'}>{v ? 'Faol' : 'Nofaol'}</Tag>
-      ),
+      render: (v: boolean) => <Tag color={v ? 'green' : 'default'}>{v ? 'Faol' : 'Nofaol'}</Tag>,
     },
     {
       title: "Qo'shilgan",
@@ -177,11 +185,7 @@ export default function EmployeesPage() {
         okButtonProps={{ style: { background: '#6366f1', border: 'none' } }}
       >
         <Form form={form} layout="vertical" style={{ marginTop: 16 }}>
-          <Form.Item
-            name="name"
-            label="Ism"
-            rules={[{ required: true, message: 'Ism kiriting' }]}
-          >
+          <Form.Item name="name" label="Ism" rules={[{ required: true, message: 'Ism kiriting' }]}>
             <Input placeholder="Ali Karimov" />
           </Form.Item>
           <Form.Item

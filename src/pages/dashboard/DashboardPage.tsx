@@ -1,6 +1,17 @@
 import { useState } from 'react'
 import {
-  Row, Col, Card, DatePicker, Select, Table, Tag, Typography, Skeleton, Empty, Button, Space,
+  Row,
+  Col,
+  Card,
+  DatePicker,
+  Select,
+  Table,
+  Tag,
+  Typography,
+  Skeleton,
+  Empty,
+  Button,
+  Space,
 } from 'antd'
 import {
   ShoppingOutlined,
@@ -85,9 +96,7 @@ export default function DashboardPage() {
       key: 'revenue',
       align: 'right' as const,
       render: (v: number) => (
-        <Text style={{ fontSize: 13, color: '#6366f1', fontWeight: 500 }}>
-          {formatCurrency(v)}
-        </Text>
+        <Text style={{ fontSize: 13, color: '#6366f1', fontWeight: 500 }}>{formatCurrency(v)}</Text>
       ),
     },
   ]
@@ -160,7 +169,9 @@ export default function DashboardPage() {
         <Col xs={24} sm={12} lg={6}>
           <StatCard
             label="O'rtacha buyurtma"
-            value={overviewLoading ? '...' : formatCurrency(overview?.summary?.averageOrderValue ?? 0)}
+            value={
+              overviewLoading ? '...' : formatCurrency(overview?.summary?.averageOrderValue ?? 0)
+            }
             icon={<DollarOutlined />}
             accentColor="#3b82f6"
             loading={overviewLoading}
@@ -238,7 +249,9 @@ export default function DashboardPage() {
                   fontSize: 13,
                 }}
               >
-                <WarningOutlined style={{ fontSize: 24, marginBottom: 8, display: 'block', color: '#e2e8f0' }} />
+                <WarningOutlined
+                  style={{ fontSize: 24, marginBottom: 8, display: 'block', color: '#e2e8f0' }}
+                />
                 Kam qolgan tovarlar yo'q
               </div>
             )}

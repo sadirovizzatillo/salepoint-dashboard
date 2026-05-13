@@ -8,12 +8,16 @@ import {
 import { PaginatedResponse } from '@/types/common.types'
 
 export const debtsApi = {
-  summary: async (params: { page?: number; limit?: number; search?: string } = {}): Promise<DebtSummaryResponse> => {
+  summary: async (
+    params: { page?: number; limit?: number; search?: string } = {}
+  ): Promise<DebtSummaryResponse> => {
     const { data } = await client.get('/debts/summary', { params })
     return data
   },
 
-  list: async (params: { page?: number; limit?: number; customerId?: string } = {}): Promise<PaginatedResponse<Debt>> => {
+  list: async (
+    params: { page?: number; limit?: number; customerId?: string } = {}
+  ): Promise<PaginatedResponse<Debt>> => {
     const { data } = await client.get('/debts', { params })
     return data
   },
